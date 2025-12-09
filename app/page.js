@@ -1,8 +1,17 @@
+import Hero from '@/components/Hero';
+import InfoBoxes from '@/components/InfoBoxes';
+import HomeProperties from '@/components/HomeProperties';
 
-export default function HomePage() {
-  return (
-    <div className="font-sans  font-bold text-red-900 text-3xl p-10">
-      HomePage
-    </div>
-  );
+const HomePage = () => {
+  console.log(process.env.MONGODB_URI);//mongodb bağlantısını test etmek için
+
+  return (<>
+    <Hero />
+    <InfoBoxes />
+    <HomeProperties />
+
+  </>);
 }
+
+export default HomePage;
+

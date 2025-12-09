@@ -1,4 +1,11 @@
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import AuthProvider from "@/components/AuthProvider";
+import { ToastContainer } from "react-toastify";
+import { GlobalProvider, useGlobalContext } from "@/context/GlobalContext";
+import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
+
 
 export const metadata = {
   title: "Property Pulse",
@@ -6,24 +13,32 @@ export const metadata = {
   keywords: "real estate, property, pulse, homes, apartments, houses, rent, buy, sell",
   authors: [{ name: "SUNGUR", url: "https://sungur.dev" }],
   creator: "SUNGUR",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-  },
   icons: {
     icon: "/favicon.ico",
   },
 };
+/** @type {import('next').Viewport} */
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export default function MainLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-      >
-        <main>
-          {children}
-        </main>
-      </body>
-    </html>
+    <AuthProvider>
+      <GlobalProvider >
+        <html lang="en">
+          <body
+          >
+            <Navbar />
+            <main>
+              {children}
+            </main>
+            <Footer />
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+          </body>
+        </html>
+      </GlobalProvider>
+    </AuthProvider>
   );
 }
