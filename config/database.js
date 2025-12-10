@@ -17,8 +17,9 @@ const connectToDatabase = async () => {
     if (!cached.promise) {
         const opts = {
             dbName: 'propertypulse',
-            bufferCommands: true, // <--- BURASI ÇOK ÖNEMLİ: TRUE OLMALI
+            bufferCommands: false, // <--- BURASI ÇOK ÖNEMLİ: TRUE OLMALI
             serverSelectionTimeoutMS: 5000,
+            socketTimeoutMS: 45000,
         };
 
         cached.promise = mongoose.connect(process.env.MONGODB_URI, opts).then((mongoose) => {
