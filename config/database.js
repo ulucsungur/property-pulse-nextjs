@@ -16,8 +16,8 @@ const connectToDatabase = async () => {
 
     try {
         await mongoose.connect(process.env.MONGODB_URI, {
-            dbName: 'propertypulse',  // DÜZELTİLDİ: Sizin ekran görüntünüzdeki isim (bitişik)
-            bufferCommands: false,
+            dbName: 'propertypulse',
+            bufferCommands: true, // <--- BURAYI DEĞİŞTİRDİK (Artık hata vermeyip bekleyecek)
             serverSelectionTimeoutMS: 5000,
         });
 
