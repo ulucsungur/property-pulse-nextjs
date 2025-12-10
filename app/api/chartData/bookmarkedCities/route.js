@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import connectToDatabase from "@/config/database";
 import Property from "@/models/Property";
 import User from "@/models/User";
