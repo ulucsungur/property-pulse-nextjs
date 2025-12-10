@@ -1,0 +1,14 @@
+{
+  "functions": {
+    "api/auth/callback/google": {
+      "runtime": "nodejs18.x",
+      "maxDuration": 20, 
+      "region": "par1" 
+    },
+    "api/auth/[...nextauth]/route": {
+      "runtime": "nodejs18.x",
+      "maxDuration": 20, 
+      "region": "par1" 
+    }
+  }
+}
