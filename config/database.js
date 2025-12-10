@@ -1,35 +1,43 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-let isConnected = false;
+let cached = global.mongoose;
+
+if (!cached) {
+    cached = global.mongoose = { conn: null, promise: null };
+}
 
 const connectToDatabase = async () => {
     mongoose.set('strictQuery', true);
 
-    if (mongoose.connections.length > 0) {
-        isConnected = mongoose.connections[0].readyState;
-        if (isConnected === 1) {
-            console.log("Already connected to the database.");
-            return;
-        }
-        await mongoose.disconnect();
+    if (cached.conn) {
+        console.log('MongoDB is already connected (Cached)');
+        return cached.conn;
+    }
+
+    if (!cached.promise) {
+        const opts = {
+            dbName: 'propertypulse',
+            bufferCommands: true, // Build hatasını önlemek için TRUE kalmalı
+            serverSelectionTimeoutMS: 5000,
+        };
+
+        cached.promise = mongoose.connect(process.env.MONGODB_URI, opts).then((mongoose) => {
+            return mongoose;
+        });
     }
 
     try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            dbName: 'propertypulse',
-            bufferCommands: true, // <--- BURAYI DEĞİŞTİRDİK (Artık hata vermeyip bekleyecek)
-            serverSelectionTimeoutMS: 5000,
-        });
-
-        isConnected = true;
-        console.log("Successfully connected to the database.");
-    } catch (error) {
-        console.error("Error connecting to the database:", error);
+        cached.conn = await cached.promise;
+        console.log('MongoDB connected (New Connection)');
+    } catch (e) {
+        cached.promise = null;
+        throw e;
     }
+
+    return cached.conn;
 };
 
 export default connectToDatabase;
-
 
 // import mongoose from "mongoose";
 
