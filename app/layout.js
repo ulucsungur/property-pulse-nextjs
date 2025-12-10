@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import { GlobalProvider, useGlobalContext } from "@/context/GlobalContext";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
+import 'photoswipe/dist/photoswipe.css';
 
 
 export const metadata = {
