@@ -8,13 +8,6 @@ export const authOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            authorization: {
-                params: {
-                    prompt: "consent",
-                    access_type: "offline",
-                    response_type: "code",
-                },
-            },
         }),
 
         GitHubProvider({
@@ -23,54 +16,115 @@ export const authOptions = {
         }),
     ],
 
-    session: {
-        strategy: "jwt", // Daha hızlı – Vercel için ideal
-    },
-
     callbacks: {
-        // 🔥 1) Kullanıcı giriş yaptığında çalışır
-        async signIn({ user }) {
-            await connectToDatabase();
+        async jwt({ token, account, profile }) {
+            // First time login
+            if (account && profile) {
+                await connectToDatabase();
 
-            let existingUser = await User.findOne({ email: user.email });
+                let existingUser = await User.findOne({ email: profile.email });
 
-            if (!existingUser) {
-                const username = (user.name || "")
-                    .slice(0, 20)
-                    .replace(/\s+/g, "")
-                    .toLowerCase();
+                if (!existingUser) {
+                    const username = profile.name
+                        .split(" ")
+                        .join("")
+                        .slice(0, 20)
+                        .toLowerCase();
 
-                const newUser = await User.create({
-                    email: user.email,
-                    username,
-                    image: user.image,
-                });
+                    existingUser = await User.create({
+                        email: profile.email,
+                        username,
+                        image: profile.picture,
+                    });
+                }
 
-                user.id = newUser._id.toString();
-            } else {
-                user.id = existingUser._id.toString();
+                token.userId = existingUser._id.toString();
             }
 
-            return true;
-        },
-
-        // 🔥 2) JWT token içini dolduruyoruz (DB sorgusu YOK)
-        async jwt({ token, user }) {
-            if (user) {
-                token.id = user.id;
-            }
             return token;
         },
 
-        // 🔥 3) Session’a user.id ekleniyor (DB sorgusu YOK)
         async session({ session, token }) {
-            if (token?.id) {
-                session.user.id = token.id;
-            }
+            session.user.id = token.userId;
             return session;
         },
     },
 };
+
+
+// import GoogleProvider from "next-auth/providers/google";
+// import GitHubProvider from "next-auth/providers/github";
+// import connectToDatabase from "@/config/database";
+// import User from "@/models/User";
+
+// export const authOptions = {
+//     providers: [
+//         GoogleProvider({
+//             clientId: process.env.GOOGLE_CLIENT_ID,
+//             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//             authorization: {
+//                 params: {
+//                     prompt: "consent",
+//                     access_type: "offline",
+//                     response_type: "code",
+//                 },
+//             },
+//         }),
+
+//         GitHubProvider({
+//             clientId: process.env.GITHUB_ID,
+//             clientSecret: process.env.GITHUB_SECRET,
+//         }),
+//     ],
+
+//     session: {
+//         strategy: "jwt", // Daha hızlı – Vercel için ideal
+//     },
+
+//     callbacks: {
+//         // 🔥 1) Kullanıcı giriş yaptığında çalışır
+//         async signIn({ user }) {
+//             await connectToDatabase();
+
+//             let existingUser = await User.findOne({ email: user.email });
+
+//             if (!existingUser) {
+//                 const username = (user.name || "")
+//                     .slice(0, 20)
+//                     .replace(/\s+/g, "")
+//                     .toLowerCase();
+
+//                 const newUser = await User.create({
+//                     email: user.email,
+//                     username,
+//                     image: user.image,
+//                 });
+
+//                 user.id = newUser._id.toString();
+//             } else {
+//                 user.id = existingUser._id.toString();
+//             }
+
+//             return true;
+//         },
+
+//         // 🔥 2) JWT token içini dolduruyoruz (DB sorgusu YOK)
+//         async jwt({ token, user }) {
+//             if (user) {
+//                 token.id = user.id;
+//             }
+//             return token;
+//         },
+
+//         // 🔥 3) Session’a user.id ekleniyor (DB sorgusu YOK)
+//         async session({ session, token }) {
+//             if (token?.id) {
+//                 session.user.id = token.id;
+//             }
+//             return session;
+//         },
+//     },
+// };
 
 
 
