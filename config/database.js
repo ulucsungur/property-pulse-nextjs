@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 
-// Global değişkeni tanımla (Vercel sunucusu yeniden başlasa bile bu kalır)
 let cached = global.mongoose;
 
-// Eğer önbellek yoksa oluştur
 if (!cached) {
     cached = global.mongoose = { conn: null, promise: null };
 }
@@ -11,17 +9,16 @@ if (!cached) {
 const connectToDatabase = async () => {
     mongoose.set('strictQuery', true);
 
-    // Zaten bağlıysa var olan bağlantıyı kullan (Hız kazandırır ve hatayı önler)
     if (cached.conn) {
         console.log('MongoDB is already connected');
         return cached.conn;
     }
 
-    // Bağlantı yoksa yeni bağlantı oluştur
     if (!cached.promise) {
         const opts = {
             dbName: 'propertypulse',
-            bufferCommands: false, // Next.js 15 için bu false olmalı ki hemen hata fırlatsın
+            bufferCommands: true, // <--- BURASI ÇOK ÖNEMLİ: TRUE OLMALI
+            serverSelectionTimeoutMS: 5000,
         };
 
         cached.promise = mongoose.connect(process.env.MONGODB_URI, opts).then((mongoose) => {
