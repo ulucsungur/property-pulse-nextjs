@@ -288,6 +288,7 @@ const PropertyEditForm = ({ property }) => {
                             name="amenities"
                             value="Balcony/Patio"
                             className="mr-2"
+                            defaultChecked={property.amenities.includes("Balcony/Patio")}
 
                         />
                         <label htmlFor="amenity_balcony_patio">Balcony/Patio</label>
