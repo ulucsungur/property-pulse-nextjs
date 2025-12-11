@@ -262,7 +262,7 @@ const Navbar = () => {
                         >Add Property</Link
                         >
                     )}
-                    {!session && (
+                    {/* {!session && (
                         <>
                             <button
                                 className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5"
@@ -277,7 +277,22 @@ const Navbar = () => {
                                 <span>Login or Register 1</span>
                             </button>
                         </>
-                    )}
+                    )} */}
+                    {!session && providers && Object.values(providers).map((provider) => (
+                        <button
+                            key={provider.id}
+                            onClick={() => signIn(provider.id)}
+                            className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5 w-full"
+                        >
+                            {provider.id === "google" && (
+                                <FaGoogle className="mr-2 text-white" />
+                            )}
+                            {provider.id === "github" && (
+                                <FaGithub className="mr-2 text-white" />
+                            )}
+                            <span>Login or Register with {provider.name}</span>
+                        </button>
+                    ))}
 
                 </div>
             </div>
