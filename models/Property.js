@@ -62,6 +62,10 @@ const PropertySchema = new Schema(
             type: Boolean,
             default: false,
         },
+        embedding: {
+            type: [Number], // Sayılardan oluşan bir dizi
+            select: false,   // Normal aramalarda gelmesin, veritabanını yormayalım
+        }
     },
     { timestamps: true }
 );
