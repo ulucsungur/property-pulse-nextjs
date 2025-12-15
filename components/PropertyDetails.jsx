@@ -1,7 +1,13 @@
+'use client'; // <--- BU SATIR EKLENDİ (ÇÖZÜM BU)
 
-import PropertyMap from "./PropertyMap";
+import dynamic from 'next/dynamic';
 import { FaTimes, FaBed, FaBath, FaRulerCombined, FaCheck, FaMapMarker } from "react-icons/fa";
 
+// Haritayı dinamik olarak ve SSR kapalı şekilde çağırıyoruz
+// Bu kod artık 'use client' olduğu için çalışacak
+const PropertyMap = dynamic(() => import('./PropertyMap'), {
+    ssr: false,
+});
 
 const PropertyDetails = ({ property }) => {
     return (

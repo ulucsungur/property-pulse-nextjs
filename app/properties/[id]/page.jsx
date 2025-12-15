@@ -1,4 +1,4 @@
-
+import SimilarProperties from "@/components/SimilarProperties";
 import PropertyHeaderImage from "@/components/PropertyHeaderImage";
 import PropertyDetails from "@/components/PropertyDetails";
 import PropertyImages from "@/components/PropertyImages";
@@ -58,6 +58,7 @@ const PropertyPage = async ({ params }) => {
                             <PropertyContactForm property={property} />
                         </aside>
                     </div>
+                    <SimilarProperties propertyId={id} />
                 </div>
 
             </section>
