@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import logo from '@/assets/images/logo.png';
+//import logo from '@/assets/images/logo.png';
+import Logo from "./Logo";
 
 const Footer = () => {
 
@@ -11,7 +12,8 @@ const Footer = () => {
                 className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4"
             >
                 <div className="mb-4 md:mb-0">
-                    <Image src={logo} alt="Logo" className="h-8 w-auto" />
+                    {/* <Image src={logo} alt="Logo" className="h-8 w-auto" /> */}
+                    <Logo />
                 </div>
                 <div
                     className="flex flex-wrap justify-center md:justify-start mb-4 md:mb-0"

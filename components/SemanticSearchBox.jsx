@@ -39,19 +39,18 @@ const SemanticSearchBox = () => {
                     <p className="text-gray-600 mb-4 text-sm">
                         Nasıl bir ev aradığınızı cümlelerle anlatın (Örn: "Deniz manzaralı, huzurlu ve geniş bir villa")
                     </p>
-
-                    <form onSubmit={handleSearch} className="w-full max-w-2xl flex gap-2">
+                    <form onSubmit={handleSearch} className="w-full max-w-2xl flex flex-col md:flex-row gap-2">
                         <input
                             type="text"
                             placeholder="Hayalinizdeki evi tarif edin..."
-                            className="flex-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+                            className="flex-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 w-full"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                         />
                         <button
                             type="submit"
                             disabled={loading}
-                            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition flex items-center gap-2 disabled:opacity-50"
+                            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2 disabled:opacity-50 w-full md:w-auto"
                         >
                             {loading ? <FaSpinner className="animate-spin" /> : <FaSearch />}
                             Ara

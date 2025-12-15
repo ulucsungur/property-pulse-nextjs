@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import logo from "@/assets/images/logo-white.png";
+//import logo from "@/assets/images/logo-white.png";
+import Logo from "./Logo";
 import profile from "@/assets/images/profile.png";
 import { FaGoogle, FaGithub } from 'react-icons/fa';
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
@@ -65,12 +66,12 @@ const Navbar = () => {
                 >
                     {/* <!-- Logo --> */}
                     <Link className="flex flex-shrink-0 items-center" href="/">
-                        <Image
-                            className="h-10 w-auto"
+                        {/* <Image
+                            className="h-10 w-10 rounded-full object-cover"
                             src={logo}
                             alt="PropertyPulse"
-                        />
-
+                        /> */}
+                        <Logo />
                         <span className="hidden md:block text-white text-2xl font-bold ml-2"
                         >PropertyPulse</span
                         >
