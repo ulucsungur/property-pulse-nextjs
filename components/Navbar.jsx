@@ -124,7 +124,7 @@ const Navbar = () => {
                                     {providers && Object.values(providers).map((provider) => (
                                         <button
                                             key={provider.id}
-                                            onClick={() => signIn(provider.id)}
+                                            onClick={() => signIn(provider.id, { callbackUrl: '/' })}
                                             className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         >
                                             {provider.id === "google" && (
@@ -229,7 +229,7 @@ const Navbar = () => {
                                         id="user-menu-item-2"
                                         onClick={() => {
                                             setIsProfileMenuOpen(false);
-                                            signOut();
+                                            signOut({ callbackUrl: '/' });
                                         }}
                                     >
                                         Sign Out
@@ -274,7 +274,7 @@ const Navbar = () => {
                     {!session && providers && Object.values(providers).map((provider) => (
                         <button
                             key={provider.id}
-                            onClick={() => signIn(provider.id)}
+                            onClick={() => signIn(provider.id, { callbackUrl: '/' })}
                             className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5 w-full"
                         >
                             {provider.id === "google" && (
