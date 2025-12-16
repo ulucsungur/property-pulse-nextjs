@@ -10,6 +10,7 @@ import Property from "@/models/Property";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 import { convertToSerializableObject } from "@/utils/convertToObject";
+import BookOrContact from "@/components/BookOrContact";
 
 
 const PropertyPage = async ({ params }) => {
@@ -55,7 +56,8 @@ const PropertyPage = async ({ params }) => {
                         <aside className="md:col-span-4 space-y-4">
                             <BookmarkButton property={property} />
                             <ShareButtons property={property} />
-                            <PropertyContactForm property={property} />
+                            {/* <PropertyContactForm property={property} /> */}
+                            <BookOrContact property={property} />
                         </aside>
                     </div>
                     <SimilarProperties propertyId={id} />
