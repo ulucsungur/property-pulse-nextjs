@@ -1,9 +1,56 @@
+'use client';
 import updateProperty from "@/app/actions/updateProperty";
+import { toast } from "react-toastify";
+import { PROPERTY_TYPES } from "@/config/propertyTypes"; // 1. Konfigürasyonu Çek
 
 const PropertyEditForm = ({ property }) => {
+    // Server Action'ı ID ile bağlıyoruz
     const updatePropertyById = updateProperty.bind(null, property._id);
+
+    // --- VALIDATION VE GÖNDERME FONKSİYONU ---
+    const handleFormSubmit = async (formData) => {
+        const email = formData.get("seller_info.email");
+        const phone = formData.get("seller_info.phone");
+
+        // 1. Telefon Kontrolü
+        const phoneRegex = /^[\d-]+$/;
+        const strictPhoneRegex = /^(\d{3}-?\d{3}-?\d{4}|\d{10,11})$/;
+
+        if (phone) {
+            if (!phoneRegex.test(phone)) {
+                toast.error("Telefon alanına Email veya Harf giremezsiniz!");
+                return;
+            }
+            if (!strictPhoneRegex.test(phone)) {
+                toast.error("Telefon formatı hatalı! (Örn: 555-555-5555)");
+                return;
+            }
+        }
+
+        // 2. Email Kontrolü
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+            toast.error("Lütfen geçerli bir Email adresi girin!");
+            return;
+        }
+
+        // --- SUNUCUYA GÖNDER ---
+        try {
+            await updatePropertyById(formData);
+            toast.success("Mülk başarıyla güncellendi!");
+        } catch (error) {
+            // Next.js Yönlendirme hatasını yoksay (Başarıdır)
+            if (error.message === 'NEXT_REDIRECT' || error.message.includes('NEXT_REDIRECT')) {
+                throw error;
+            }
+            console.error("Güncelleme Hatası:", error);
+            toast.error("Bir hata oluştu.");
+        }
+    };
+    // ------------------------------------------
+
     return (
-        <form action={updatePropertyById}>
+        <form action={handleFormSubmit}>
             <h2 className="text-3xl text-center font-semibold mb-6">
                 Edit Property
             </h2>
@@ -19,13 +66,12 @@ const PropertyEditForm = ({ property }) => {
                     defaultValue={property.type}
                     required
                 >
-                    <option value="Apartment">Apartment</option>
-                    <option value="Condo">Condo</option>
-                    <option value="House">House</option>
-                    <option value="CabinOrCottage">Cabin or Cottage</option>
-                    <option value="Room">Room</option>
-                    <option value="Studio">Studio</option>
-                    <option value="Other">Other</option>
+                    {/* Merkezi listeden seçenekleri oluştur */}
+                    {PROPERTY_TYPES.map((type) => (
+                        <option key={type.value} value={type.value}>
+                            {type.label}
+                        </option>
+                    ))}
                 </select>
             </div>
             <div className="mb-4">
@@ -384,7 +430,7 @@ const PropertyEditForm = ({ property }) => {
                     id="seller_email"
                     name="seller_info.email"
                     className="border rounded w-full py-2 px-3"
-                    placeholder="Email address"
+                    placeholder="john@example.com"
                     defaultValue={property.seller_info.email}
                     required
                 />
@@ -400,11 +446,13 @@ const PropertyEditForm = ({ property }) => {
                     id="seller_phone"
                     name="seller_info.phone"
                     className="border rounded w-full py-2 px-3"
-                    placeholder="Phone"
+                    placeholder="555-555-5555"
                     defaultValue={property.seller_info.phone}
+                    required
                 />
             </div>
 
+            {/* Resim alanı şu an pasif olduğu için aynı bıraktım, daha sonra açabiliriz */}
             {/* <div className="mb-4">
                 <label htmlFor="images" className="block text-gray-700 font-bold mb-2"
                 >Images (Select up to 4 images)</label

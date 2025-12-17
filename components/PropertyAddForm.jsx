@@ -1,8 +1,58 @@
+'use client'; // Toast ve Validation için client component olmalı
 import addProperty from "@/app/actions/addProperty";
+import { toast } from "react-toastify";
+import { PROPERTY_TYPES } from "@/config/propertyTypes";
 
 const PropertyAddForm = () => {
+
+    const handleFormSubmit = async (formData) => {
+        const email = formData.get("seller_info.email");
+        const phone = formData.get("seller_info.phone");
+
+        // 1. Telefon Kontrolü
+        const phoneRegex = /^[\d-]+$/;
+        const strictPhoneRegex = /^(\d{3}-?\d{3}-?\d{4}|\d{10,11})$/;
+
+        if (phone) {
+            if (!phoneRegex.test(phone)) {
+                toast.error("Telefon alanına Email veya Harf giremezsiniz!");
+                return;
+            }
+            if (!strictPhoneRegex.test(phone)) {
+                toast.error("Telefon formatı hatalı! (Örn: 555-555-5555)");
+                return;
+            }
+        }
+
+        // 2. Email Kontrolü
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+            toast.error("Lütfen geçerli bir Email adresi girin!");
+            return;
+        }
+
+        // --- SUNUCUYA GÖNDERME KISMI (DÜZELTİLDİ) ---
+        try {
+            await addProperty(formData);
+            // Başarılı olursa buraya gelmeden redirect olur, ya da:
+            toast.success("Mülk başarıyla eklendi!");
+        } catch (error) {
+            // Next.js Yönlendirme Hatası mı? (Bu aslında başarıdır)
+            if (error.message === 'NEXT_REDIRECT' || error.message.includes('NEXT_REDIRECT')) {
+                // Hata mesajı basma, işlemi durdurma.
+                // Yönlendirmenin çalışması için hatayı tekrar fırlatmamız gerekir:
+                throw error;
+            }
+
+            // Gerçek bir hata ise:
+            console.error("Form Gönderme Hatası:", error);
+            toast.error("Bir hata oluştu.");
+        }
+    };
+    // -----------------------------------------------
+
     return (
-        <form action={addProperty} >
+        <form action={handleFormSubmit}>
             <h2 className="text-3xl text-center font-semibold mb-6">
                 Add Property
             </h2>
@@ -17,13 +67,12 @@ const PropertyAddForm = () => {
                     className="border rounded w-full py-2 px-3"
                     required
                 >
-                    <option value="Apartment">Apartment</option>
-                    <option value="Condo">Condo</option>
-                    <option value="House">House</option>
-                    <option value="CabinOrCottage">Cabin or Cottage</option>
-                    <option value="Room">Room</option>
-                    <option value="Studio">Studio</option>
-                    <option value="Other">Other</option>
+                    {/* Merkezi listeden seçenekleri oluştur */}
+                    {PROPERTY_TYPES.map((type) => (
+                        <option key={type.value} value={type.value}>
+                            {type.label}
+                        </option>
+                    ))}
                 </select>
             </div>
             <div className="mb-4">
@@ -342,6 +391,8 @@ const PropertyAddForm = () => {
                     placeholder="Name"
                 />
             </div>
+
+            {/* Email ve Telefon Inputları (Validation ile) */}
             <div className="mb-4">
                 <label
                     htmlFor="seller_email"
@@ -353,7 +404,7 @@ const PropertyAddForm = () => {
                     id="seller_email"
                     name="seller_info.email"
                     className="border rounded w-full py-2 px-3"
-                    placeholder="Email address"
+                    placeholder="john@example.com"
                     required
                 />
             </div>
@@ -368,7 +419,8 @@ const PropertyAddForm = () => {
                     id="seller_phone"
                     name="seller_info.phone"
                     className="border rounded w-full py-2 px-3"
-                    placeholder="Phone"
+                    placeholder="555-555-5555"
+                    required
                 />
             </div>
 

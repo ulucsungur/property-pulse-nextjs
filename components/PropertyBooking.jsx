@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarAlt, FaPaperPlane } from "react-icons/fa";
 import { toast } from "react-toastify"; // Toast kütüphanesi eklendi
+import { useGlobalContext } from "@/context/GlobalContext";
 
 const PropertyBooking = ({ property }) => {
     const [startDate, setStartDate] = useState(null);
@@ -12,6 +13,7 @@ const PropertyBooking = ({ property }) => {
     const [days, setDays] = useState(0);
     const [loading, setLoading] = useState(false);
 
+    const { setUnreadCount } = useGlobalContext();
     const nightlyRate = property.rates.nightly;
 
     useEffect(() => {
@@ -58,6 +60,7 @@ const PropertyBooking = ({ property }) => {
 
             if (res.ok) {
                 toast.success("Rezervasyon talebiniz başarıyla alındı!");
+                setUnreadCount((prev) => prev + 1);
                 // Formu temizle
                 setStartDate(null);
                 setEndDate(null);

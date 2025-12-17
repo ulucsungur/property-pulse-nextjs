@@ -22,8 +22,7 @@ const PropertyImages = ({ images }) => {
                                     className="object-cover h-[400px] mx-auto rounded-xl cursor-pointer"
                                     width={800}
                                     height={400}
-                                    prior
-                                    ity={true}
+                                    priority={true}
                                 />
                             )}
                         </Item>
