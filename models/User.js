@@ -1,4 +1,5 @@
 import { Schema, model, models } from "mongoose";
+
 const UserSchema = new Schema(
     {
         username: {
@@ -14,8 +15,31 @@ const UserSchema = new Schema(
                 "Please fill a valid email address",
             ],
         },
+        // --- YENİ EKLENEN KISIM ---
+        password: {
+            type: String,
+            required: false, // Google/GitHub kullanıcıları için zorunlu değil
+            select: false,   // Güvenlik: Kullanıcıyı çekerken şifre gelmesin
+        },
+        // -------------------------
         image: {
             type: String,
+        },
+        surname: {
+            type: String,
+            required: false,
+        },
+        phone: {
+            type: String,
+            required: false,
+        },
+        country: {
+            type: String,
+            required: false,
+        },
+        dateOfBirth: {
+            type: Date,
+            required: false,
         },
         bookmarks: [
             {

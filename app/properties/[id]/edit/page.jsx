@@ -5,13 +5,18 @@ import { convertToSerializableObject } from "@/utils/convertToObject";
 
 const PropertyEditPage = async ({ params }) => {
     await connectToDatabase();
-    const { id } = params;
+
+    // --- DÜZELTME 1: params await edilmeli ---
+    const { id } = await params;
+    // ----------------------------------------
 
     if (!id) {
         return <h1 className="text-center text-2xl font-bold mt-10">Missing property id</h1>;
     }
 
-    const propertyDoc = await Property.findById(id.toString()).lean();
+    const propertyDoc = await Property.findById(id).lean();
+
+    // Convert to serializable object
     const property = convertToSerializableObject(propertyDoc);
 
     if (!property) {
@@ -21,7 +26,8 @@ const PropertyEditPage = async ({ params }) => {
     return (
         <section className="bg-blue-50">
             <div className="container m-auto max-w-2xl py-24">
-                <div className="bg-white px-6 py-8 shadow-md rounded-md border border-gray-300 m-4 md.m-0">
+                {/* DÜZELTME 2: md.m-0 -> md:m-0 (Tailwind yazım hatası) */}
+                <div className="bg-white px-6 py-8 shadow-md rounded-md border border-gray-300 m-4 md:m-0">
                     <PropertyEditForm property={property} />
                 </div>
             </div>
