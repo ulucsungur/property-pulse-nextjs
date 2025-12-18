@@ -15,86 +15,102 @@ const SemanticSearchBox = () => {
         if (!query.trim()) return;
 
         setLoading(true);
+        // Her aramada sonuçları önce temizle ki eski sonuçlar kalmasın
         setResults([]);
 
         try {
             const res = await fetch(`/api/semantic-search?query=${encodeURIComponent(query)}`);
+
+            // Eğer sunucu 200 OK dışı bir şey dönerse (örn: 500 hatası)
+            if (!res.ok) {
+                console.error("API Hatası:", res.status);
+                setResults([]); // Sonuçları boşalt
+                return;
+            }
+
             const data = await res.json();
-            setResults(data);
+
+            // KORUMA: Gelen veri gerçekten bir dizi mi? (Array check)
+            if (Array.isArray(data)) {
+                setResults(data);
+            } else {
+                console.error("Beklenmeyen veri formatı:", data);
+                setResults([]);
+            }
+
             setHasSearched(true);
         } catch (error) {
             console.error("Arama hatası:", error);
+            setResults([]);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <section className="bg-blue-50 py-4 mb-4">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full">
+            <form onSubmit={handleSearch} className="w-full flex flex-col md:flex-row gap-2">
+                <input
+                    type="text"
+                    placeholder="Hayalinizdeki evi tarif edin (Örn: Sarıyer'de deniz manzaralı villa)"
+                    className="flex-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 w-full"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                />
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2 disabled:opacity-50 w-full md:w-auto"
+                >
+                    {loading ? <FaSpinner className="animate-spin" /> : <FaSearch />}
+                    Ara
+                </button>
+            </form>
 
-                {/* --- Arama Formu --- */}
-                <div className="flex flex-col items-center mb-6">
-                    <h2 className="text-2xl font-bold text-blue-800 mb-2">Yapay Zeka Destekli Arama</h2>
-                    <p className="text-gray-600 mb-4 text-sm">
-                        Nasıl bir ev aradığınızı cümlelerle anlatın (Örn: "Deniz manzaralı, huzurlu ve geniş bir villa")
-                    </p>
-                    <form onSubmit={handleSearch} className="w-full max-w-2xl flex flex-col md:flex-row gap-2">
-                        <input
-                            type="text"
-                            placeholder="Hayalinizdeki evi tarif edin..."
-                            className="flex-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 w-full"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                        />
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2 disabled:opacity-50 w-full md:w-auto"
-                        >
-                            {loading ? <FaSpinner className="animate-spin" /> : <FaSearch />}
-                            Ara
-                        </button>
-                    </form>
-                </div>
+            {/* --- Sonuçlar Alanı --- */}
+            {/* Sadece arama yapıldıysa ve sonuç varsa gösterelim (Hero içinde temiz dursun) */}
+            {hasSearched && (
+                <div className="mt-4 bg-white p-4 rounded-lg shadow-xl absolute left-0 right-0 z-50 max-h-96 overflow-y-auto w-full md:max-w-3xl md:mx-auto border border-gray-200">
 
-                {/* --- Sonuçlar --- */}
-                <div className="space-y-4">
-                    {loading && <p className="text-center text-gray-500">Yapay zeka en uygun evleri analiz ediyor...</p>}
-
-                    {!loading && hasSearched && results.filter(p => p.score > 0.60).length === 0 && (
-                        <p className="text-center text-red-500">Aradığınız kriterlere uygun ev bulunamadı.</p>
+                    {/* Sonuç Yoksa */}
+                    {results.length === 0 && !loading && (
+                        <p className="text-center text-gray-500 py-4">
+                            Kriterlerinize uygun ilan bulunamadı.
+                        </p>
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {/* BURAYA DİKKAT: .filter ekledik */}
+                    {/* Sonuçlar Varsa */}
+                    <div className="space-y-4">
+                        {/* .filter kullanmadan önce results'ın dizi olduğundan eminiz */}
                         {results
-                            .filter((property) => property.score > 0.75) // %60'ın altındakileri gizle
+                            .filter((property) => property.score > 0.60)
                             .map((property) => (
-                                <Link href={`/properties/${property._id}`} key={property._id} className="block group h-full">
-                                    {/* ... (kart içeriği aynı) ... */}
-                                    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 h-full flex flex-col border border-gray-100">
-
-                                        <div className="relative h-48 w-full">
+                                <Link href={`/properties/${property._id}`} key={property._id} className="block group">
+                                    <div className="flex items-center gap-4 border-b pb-4 last:border-0 hover:bg-gray-50 p-2 rounded transition">
+                                        {/* Küçük Resim */}
+                                        <div className="relative w-20 h-20 flex-shrink-0">
                                             <Image
-                                                src={property.images && property.images[0] ? property.images[0] : "/images/properties/a1.jpg"}
+                                                src={property.images && property.images[0] ? property.images[0] : "/images/placeholder.jpg"}
                                                 alt={property.name}
                                                 fill
-                                                className="object-cover group-hover:scale-105 transition duration-500"
+                                                className="object-cover rounded-md"
                                             />
-                                            <div className={`absolute top-2 right-2 text-white text-xs font-bold px-2 py-1 rounded-full shadow ${property.score > 0.8 ? 'bg-green-600' : 'bg-yellow-500'}`}>
-                                                %{(property.score * 100).toFixed(0)} Eşleşme
-                                            </div>
                                         </div>
 
-                                        <div className="p-4 flex flex-col flex-grow">
-                                            <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-1">{property.name}</h3>
-                                            <p className="text-gray-500 text-sm mb-3 line-clamp-2">{property.description}</p>
-                                            {/* ... (geri kalan aynı) ... */}
-                                            <div className="mt-auto flex justify-between items-center text-sm text-gray-600 border-t pt-2">
-                                                <span>{property.beds} Yatak • {property.baths} Banyo</span>
-                                                <span className="font-semibold text-blue-600">
-                                                    {property.rates?.monthly ? `$${property.rates.monthly}/ay` : 'Fiyat Sorunuz'}
+                                        {/* Yazılar */}
+                                        <div className="flex-1">
+                                            <h3 className="font-bold text-gray-800 group-hover:text-blue-600 line-clamp-1">
+                                                {property.name}
+                                            </h3>
+                                            <p className="text-sm text-gray-500">
+                                                {property.location?.city}, {property.location?.state}
+                                            </p>
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                                                    {property.type}
+                                                </span>
+                                                <span className="text-xs text-green-600 font-bold">
+                                                    %{(property.score * 100).toFixed(0)} Eşleşme
                                                 </span>
                                             </div>
                                         </div>
@@ -103,8 +119,8 @@ const SemanticSearchBox = () => {
                             ))}
                     </div>
                 </div>
-            </div>
-        </section>
+            )}
+        </div>
     );
 };
 

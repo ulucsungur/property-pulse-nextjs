@@ -1,13 +1,11 @@
 import Link from "next/link";
-import { PROPERTY_TYPES } from "@/config/propertyTypes"; // Merkezi listeyi çağır
+import { PROPERTY_TYPES } from "@/config/propertyTypes";
 import {
     FaBuilding, FaHome, FaHotel, FaWarehouse, FaStore, FaLandmark, FaBed, FaMountain, FaQuestionCircle
 } from "react-icons/fa";
 
 const CategoryButtons = () => {
 
-    // Hangi kategoriye hangi ikonun geleceğini belirleyen harita
-    // Anahtar kelimeler (Key), config dosyasındaki 'value' ile AYNI olmalı
     const iconMap = {
         "Apartment": <FaBuilding />,
         "Condo": <FaLandmark />,
@@ -22,30 +20,31 @@ const CategoryButtons = () => {
     };
 
     return (
-        <section className="bg-blue-50 py-4 border-t border-blue-100">
+        // py-4 -> py-2 yaptık, dikey boşluğu azalttık
+        <section className="bg-blue-50 py-2 border-t border-blue-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h3 className="text-center font-bold text-gray-700 mb-4">Browse by Category</h3>
-                <div className="flex flex-wrap justify-center gap-4">
+                {/* Başlık margin'ini azalttık (mb-4 -> mb-2) */}
+                {/* <h3 className="text-center font-bold text-gray-700 mb-2 text-sm uppercase tracking-wide opacity-80">Kategoriler</h3> */}
 
-                    {/* Config dosyasındaki listeyi döngüye sokuyoruz */}
+                {/* gap-4 -> gap-2 yaptık, butonları birbirine yaklaştırdık */}
+                <div className="flex flex-wrap justify-center gap-2">
+
                     {PROPERTY_TYPES.map((type) => (
                         <Link
                             key={type.value}
                             href={`/properties?type=${type.value}`}
-                            className="bg-white hover:bg-blue-600 hover:text-white text-gray-700 font-medium py-2 px-6 rounded-full shadow-sm transition duration-300 flex items-center gap-2 border border-gray-200"
+                            // Butonları küçülttük: py-1.5 px-4, text-sm
+                            className="bg-white hover:bg-blue-600 hover:text-white text-gray-700 font-medium py-1.5 px-4 rounded-full shadow-sm transition duration-300 flex items-center gap-1.5 border border-gray-200 text-sm"
                         >
-                            {/* İkonu haritadan bul, yoksa varsayılan ev ikonu koy */}
-                            <span className="text-lg">{iconMap[type.value] || <FaHome />}</span>
-
-                            {/* Etiketi config dosyasından al (İngilizce gelecek) */}
+                            <span className="text-base">{iconMap[type.value] || <FaHome />}</span>
                             <span>{type.label}</span>
                         </Link>
                     ))}
 
-                    {/* Filtreyi Temizle Butonu */}
                     <Link
                         href="/properties"
-                        className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-full shadow-sm transition duration-300"
+                        // "View All" butonunu da aynı boyuta getirdik
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-1.5 px-4 rounded-full shadow-sm transition duration-300 text-sm"
                     >
                         View All
                     </Link>

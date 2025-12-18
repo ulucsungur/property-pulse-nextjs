@@ -11,7 +11,7 @@ const HomePage = () => {
 
   return (<>
     <Hero />
-    <SemanticSearchBox />
+    {/* <SemanticSearchBox /> */}
     <CategoryButtons />
     <InfoBoxes />
     <FeaturedProperties />

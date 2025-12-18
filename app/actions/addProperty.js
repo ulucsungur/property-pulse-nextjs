@@ -6,6 +6,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import cloudinary from "@/config/cloudinary";
 import { Readable } from "stream";
+// 1. IMPORT: Embedding fonksiyonunu ekledik
+import { generateEmbedding } from "@/utils/generateEmbedding";
 
 // Helper: Cloudinary stream upload
 async function uploadToCloudinary(file) {
@@ -36,10 +38,8 @@ async function addProperty(formData) {
 
     // Formdan gelen dosyaları al
     const rawImages = formData.getAll("images");
-    //console.log("Raw images:", rawImages);
 
     const images = rawImages.filter(f => f instanceof File && f.size > 0);
-    //console.log("Filtered images:", images);
 
     if (images.length === 0) {
         throw new Error("At least one image is required");
@@ -85,6 +85,27 @@ async function addProperty(formData) {
         },
         images: imageUrls,
     };
+
+    // --- 2. YENİ EKLENEN KISIM: OTOMATİK EMBEDDING ---
+    // Yapay zeka araması için metin özetini oluştur
+    const textToEmbed = `
+        Title: ${propertyData.name}
+        Type: ${propertyData.type}
+        Description: ${propertyData.description}
+        Amenities: ${propertyData.amenities.join(", ")}
+        Location: ${propertyData.location.city}, ${propertyData.location.state}
+        Features: ${propertyData.beds} beds, ${propertyData.baths} baths
+    `;
+
+    try {
+        // Vektörü oluştur ve veriye ekle
+        const embedding = await generateEmbedding(textToEmbed);
+        propertyData.embedding = embedding;
+    } catch (error) {
+        // Eğer AI hata verirse (kota vs.) işlemi durdurma, ilanı kaydet ama logla.
+        console.error("Otomatik embedding oluşturulamadı:", error);
+    }
+    // -----------------------------------------------
 
     // MongoDB kaydı
     const newProperty = new Property(propertyData);
