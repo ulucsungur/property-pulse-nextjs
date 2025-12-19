@@ -34,7 +34,7 @@ const PropertyPage = async ({ params }) => {
             {/* <!-- Header Image --> */}
             <PropertyHeaderImage image={property.images[0]} />
             {/* <!-- Go Back --> */}
-            <section>
+            <section >
                 <div className="container m-auto py-6 px-6">
                     <Link
                         href="/properties"
@@ -45,7 +45,7 @@ const PropertyPage = async ({ params }) => {
                 </div>
             </section>
             {/* <!-- Property Info --> */}
-            <section className="bg-blue-50">
+            <section className="bg-blue-50 dark:bg-gray-900 min-h-screen">
                 <div className="container m-auto py-10 px-6">
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                         {/* Main Content (8/12 = ~70%) */}

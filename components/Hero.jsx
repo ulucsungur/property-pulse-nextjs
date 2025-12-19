@@ -9,7 +9,7 @@ const Hero = () => {
 
     return (
         // DÜZELTME 1: py-20 -> py-12 ve min-h düşürüldü
-        <section className="bg-blue-700 py-12 mb-4 min-h-[400px] flex flex-col justify-center">
+        <section className="bg-blue-700 dark:bg-gray-800 py-12 mb-4 min-h-[400px] flex flex-col justify-center">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center w-full">
 
                 {/* DÜZELTME 2: mb-8 -> mb-6 (Başlık altı boşluk azaldı) */}
@@ -23,7 +23,7 @@ const Hero = () => {
                     </p>
                 </div>
 
-                <div className="bg-white p-5 rounded-xl shadow-2xl w-full max-w-3xl transform transition-all">
+                <div className="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-2xl w-full max-w-3xl transform transition-all">
 
                     {/* Sekme Başlıkları - Daha kompakt */}
                     <div className="flex justify-center mb-4 space-x-6 border-b pb-2">
@@ -31,7 +31,7 @@ const Hero = () => {
                             onClick={() => setSearchType('classic')}
                             className={`flex items-center gap-2 pb-2 text-md font-medium transition-all ${searchType === 'classic'
                                 ? 'text-blue-600 border-b-2 border-blue-600'
-                                : 'text-gray-500 hover:text-gray-700'
+                                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                                 }`}
                         >
                             <FaSearch /> Search by Location

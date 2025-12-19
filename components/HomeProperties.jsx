@@ -12,7 +12,7 @@ const HomeProperties = async () => {
     //const recentProperties = properties.slice(0, 6);
     return (
         <>
-            <section className="px-4 py-8">
+            <section className="bg-blue-50 dark:bg-gray-900 px-4 py-6">
                 <div className="container-xl lg:container m-auto px-4 py-6">
                     <h2 className="text-2xl font-bold mb-6 text-blue-500 text-center">Recent Properties</h2>
                     {recentProperties.length === 0 ? (<p>No Properties Found</p>) : (

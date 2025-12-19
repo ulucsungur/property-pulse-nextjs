@@ -9,13 +9,13 @@ const BookOrContact = ({ property }) => {
     const [activeTab, setActiveTab] = useState("booking");
 
     return (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-white dark:bg-gray-800  rounded-lg shadow-md overflow-hidden">
             {/* --- TAB BUTONLARI --- */}
             <div className="flex border-b">
                 <button
                     className={`flex-1 py-4 text-center font-bold flex items-center justify-center gap-2 transition duration-300 ${activeTab === "booking"
-                            ? "bg-blue-50 text-blue-600 border-b-4 border-blue-600"
-                            : "bg-gray-50 text-gray-500 hover:bg-gray-100"
+                        ? "bg-blue-50 text-blue-600 border-b-4 border-blue-600"
+                        : "bg-gray-50 dark:bg-gray-700 text-gray-500 hover:bg-gray-100"
                         }`}
                     onClick={() => setActiveTab("booking")}
                 >
@@ -24,8 +24,8 @@ const BookOrContact = ({ property }) => {
 
                 <button
                     className={`flex-1 py-4 text-center font-bold flex items-center justify-center gap-2 transition duration-300 ${activeTab === "message"
-                            ? "bg-blue-50 text-blue-600 border-b-4 border-blue-600"
-                            : "bg-gray-50 text-gray-500 hover:bg-gray-100"
+                        ? "bg-blue-50 text-blue-600 border-b-4 border-blue-600"
+                        : "bg-gray-50 dark:bg-gray-700 text-gray-500 hover:bg-gray-100"
                         }`}
                     onClick={() => setActiveTab("message")}
                 >

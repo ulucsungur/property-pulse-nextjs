@@ -50,16 +50,16 @@ const ChartPage = () => {
         <main className="p-6">
             <h1 className="text-2xl font-bold mb-6 text-center">İlan Verileri</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white shadow rounded p-4 h-[400px] flex items-center justify-center">
+                <div className="bg-white dark:bg-gray-200 shadow rounded p-4 h-[400px] flex items-center justify-center">
                     <BarChart data={cityData} />
                 </div>
-                <div className="bg-white shadow rounded p-4 h-[400px] flex items-center justify-center">
+                <div className="bg-white dark:bg-gray-200 shadow rounded p-4 h-[400px] flex items-center justify-center">
                     <LineChart data={monthlyData} />
                 </div>
-                <div className="bg-white shadow rounded p-4 h-[400px] flex items-center justify-center">
+                <div className="bg-white dark:bg-gray-200 shadow rounded p-4 h-[400px] flex items-center justify-center">
                     <PieChart data={rentalTypeData} />
                 </div>
-                <div className="bg-white shadow rounded p-4 h-[400px] flex items-center justify-center">
+                <div className="bg-white dark:bg-gray-200 shadow rounded p-4 h-[400px] flex items-center justify-center">
                     <RadarChart data={bookmarkData} />
                 </div>
             </div>

@@ -21,7 +21,7 @@ const CategoryButtons = () => {
 
     return (
         // py-4 -> py-2 yaptık, dikey boşluğu azalttık
-        <section className="bg-blue-50 py-2 border-t border-blue-100">
+        <section className="bg-blue-50 dark:bg-gray-900 py-2 border-t border-blue-100 dark:border-gray-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Başlık margin'ini azalttık (mb-4 -> mb-2) */}
                 {/* <h3 className="text-center font-bold text-gray-700 mb-2 text-sm uppercase tracking-wide opacity-80">Kategoriler</h3> */}
@@ -44,7 +44,7 @@ const CategoryButtons = () => {
                     <Link
                         href="/properties"
                         // "View All" butonunu da aynı boyuta getirdik
-                        className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-1.5 px-4 rounded-full shadow-sm transition duration-300 text-sm"
+                        className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-medium py-1.5 px-4 rounded-full shadow-sm transition duration-300 text-sm"
                     >
                         View All
                     </Link>

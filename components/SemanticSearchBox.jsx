@@ -53,7 +53,7 @@ const SemanticSearchBox = () => {
                 <input
                     type="text"
                     placeholder="Describe your dream home (e.g., a sea-view villa in Sarıyer)."
-                    className="flex-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 w-full"
+                    className="flex-1 p-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-white bg-white dark:bg-gray-700 w-full"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                 />

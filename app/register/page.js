@@ -57,11 +57,11 @@ const RegisterPage = () => {
     };
 
     return (
-        <section className="bg-blue-50 min-h-screen flex-grow">
+        <section className="bg-blue-50 dark:bg-gray-700 min-h-screen flex-grow">
             <div className="container m-auto max-w-2xl py-24">
-                <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
+                <div className="bg-white dark:bg-gray-800 px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
                     <form onSubmit={handleSubmit}>
-                        <h2 className="text-3xl text-center font-bold mb-6 text-gray-800">
+                        <h2 className="text-3xl text-center font-bold mb-6 bg-white dark:bg-gray-800">
                             Kayıt Ol
                         </h2>
 
@@ -151,13 +151,13 @@ const RegisterPage = () => {
                             onClick={() => signIn("google", { callbackUrl: "/" })}
                             className="flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full transition duration-300"
                         >
-                            <FaGoogle className="mr-2" /> Google ile Kayıt Ol
+                            <FaGoogle className="mr-2" /> Register with Google
                         </button>
                         <button
                             onClick={() => signIn("github", { callbackUrl: "/" })}
-                            className="flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded-full w-full transition duration-300"
+                            className="flex items-center justify-center bg-gray-900 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded-full w-full transition duration-300"
                         >
-                            <FaGithub className="mr-2" /> GitHub ile Kayıt Ol
+                            <FaGithub className="mr-2" /> Register with GitHub
                         </button>
                     </div>
 

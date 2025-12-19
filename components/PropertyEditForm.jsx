@@ -26,7 +26,7 @@ const PropertyEditForm = ({ property }) => {
             .join(", ");
 
         if (!name || !city) {
-            toast.warn("Yapay zeka için lütfen Başlık ve Şehir alanlarını kontrol edin.");
+            toast.warn("Please enter Listing Name and City first.");
             return;
         }
 
@@ -41,13 +41,13 @@ const PropertyEditForm = ({ property }) => {
             const data = await res.json();
             if (res.ok) {
                 document.getElementById("description").value = data.description;
-                toast.success("Açıklama güncellendi! ✨");
+                toast.success("Description updated by AI! ✨");
             } else {
-                toast.error("Hata: " + (data.error || "Bilinmeyen hata"));
+                toast.error("AI Error: " + (data.error || "Unknown error"));
             }
         } catch (error) {
             console.error(error);
-            toast.error("Sunucu hatası.");
+            toast.error("Server error.");
         } finally {
             setAiLoading(false);
         }
@@ -76,54 +76,51 @@ const PropertyEditForm = ({ property }) => {
 
         if (phone) {
             if (!phoneRegex.test(phone)) {
-                toast.error("Telefon alanına harf giremezsiniz!");
+                toast.error("Phone cannot contain letters!");
                 return;
             }
             if (!strictPhoneRegex.test(phone)) {
-                toast.error("Telefon formatı hatalı!");
+                toast.error("Invalid phone format! (Ex: 555-555-5555)");
                 return;
             }
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email || !emailRegex.test(email)) {
-            toast.error("Geçersiz Email!");
+            toast.error("Invalid Email!");
             return;
         }
 
         try {
             await updatePropertyById(formData);
-            toast.success("Mülk başarıyla güncellendi!");
+            toast.success("Property updated successfully!");
         } catch (error) {
             if (error.message === 'NEXT_REDIRECT' || error.message.includes('NEXT_REDIRECT')) {
                 throw error;
             }
-            console.error("Güncelleme Hatası:", error);
-            toast.error("Bir hata oluştu.");
+            console.error("Update Error:", error);
+            toast.error("An error occurred.");
         }
     };
 
     return (
         <form action={handleFormSubmit}>
-            <h2 className="text-3xl text-center font-semibold mb-6">Edit Property</h2>
+            <h2 className="text-3xl text-center font-semibold mb-6 text-gray-800 dark:text-white">Edit Property</h2>
 
-            {/* --- RESİM YÖNETİMİ DÜZELTİLDİ --- */}
-            <div className="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <label className="block text-gray-700 font-bold mb-3">Manage Images</label>
+            {/* --- RESİM YÖNETİMİ --- */}
+            {/* Arka plan: bg-gray-50 -> dark:bg-gray-700 */}
+            <div className="mb-6 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+                <label className="block text-gray-700 dark:text-gray-200 font-bold mb-3">Manage Images</label>
 
                 {visibleImages.length > 0 ? (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                         {visibleImages.map((img, index) => (
-                            <div key={index} className="relative group w-full h-32 rounded-lg overflow-hidden border border-gray-300 shadow-sm bg-white">
-                                {/* Resim */}
+                            <div key={index} className="relative group w-full h-32 rounded-lg overflow-hidden border border-gray-300 dark:border-gray-500 shadow-sm">
                                 <img
                                     src={img}
-                                    alt={`Property Image ${index}`}
+                                    alt={`Image ${index}`}
                                     className="w-full h-full object-cover"
                                 />
-
-                                {/* Silme Katmanı (Overlay) - DÜZELTİLDİ */}
-                                {/* Başlangıçta opacity-0 (görünmez), Hover olunca opacity-100 (görünür) */}
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                     <button
                                         type="button"
@@ -138,24 +135,24 @@ const PropertyEditForm = ({ property }) => {
                         ))}
                     </div>
                 ) : (
-                    <p className="text-gray-500 text-sm mb-4 italic">No images available.</p>
+                    <p className="text-gray-500 dark:text-gray-300 text-sm mb-4 italic">No images available.</p>
                 )}
 
-                <label className="block text-sm text-gray-600 mb-2 font-bold">Add New Images</label>
+                <label className="block text-sm text-gray-600 dark:text-gray-300 mb-2 font-bold">Add New Images</label>
                 <div className="flex items-center justify-center w-full mb-4">
-                    <label htmlFor="new_images" className="flex flex-col items-center justify-center w-full h-32 border-2 border-blue-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-blue-50 transition">
+                    <label htmlFor="new_images" className="flex flex-col items-center justify-center w-full h-32 border-2 border-blue-300 border-dashed rounded-lg cursor-pointer bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-600 transition">
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                             <FaPlus className="text-blue-500 text-2xl mb-2" />
-                            <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span></p>
-                            <p className="text-xs text-gray-500">MAX 4 images total</p>
+                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span></p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">MAX 4 images total</p>
                         </div>
                         <input id="new_images" name="new_images" type="file" className="hidden" multiple accept="image/*" onChange={handleFileChange} />
                     </label>
                 </div>
 
                 {newImagesPreview.length > 0 && (
-                    <div className="mt-4 p-2 bg-green-50 rounded-md border border-green-100">
-                        <p className="text-sm text-green-700 font-bold mb-2">Selected to Upload ({newImagesPreview.length}):</p>
+                    <div className="mt-4 p-2 bg-green-50 dark:bg-green-900 rounded-md border border-green-100 dark:border-green-800">
+                        <p className="text-sm text-green-700 dark:text-green-200 font-bold mb-2">Selected to Upload ({newImagesPreview.length}):</p>
                         <div className="flex gap-2 overflow-x-auto pb-2">
                             {newImagesPreview.map((src, i) => (
                                 <img key={i} src={src} className="w-20 h-20 object-cover rounded-md border border-green-300 shadow-sm" alt="Preview" />
@@ -164,14 +161,14 @@ const PropertyEditForm = ({ property }) => {
                     </div>
                 )}
             </div>
-            {/* ------------------------------------- */}
+            {/* ------------------------------------------- */}
 
             <div className="mb-4">
-                <label htmlFor="type" className="block text-gray-700 font-bold mb-2">Property Type</label>
+                <label htmlFor="type" className="block text-gray-700 dark:text-gray-200 font-bold mb-2">Property Type</label>
                 <select
                     id="type"
                     name="type"
-                    className="border rounded w-full py-2 px-3"
+                    className="border rounded w-full py-2 px-3 bg-white dark:bg-gray-700 text-gray-700 dark:text-white dark:border-gray-600 focus:outline-none"
                     defaultValue={property.type}
                     required
                 >
@@ -182,46 +179,68 @@ const PropertyEditForm = ({ property }) => {
             </div>
 
             <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">Listing Name</label>
-                <input type="text" id="name" name="name" className="border rounded w-full py-2 px-3 mb-2" defaultValue={property.name} required />
+                <label className="block text-gray-700 dark:text-gray-200 font-bold mb-2">Listing Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    className="border rounded w-full py-2 px-3 bg-white dark:bg-gray-700 text-gray-700 dark:text-white dark:border-gray-600 focus:outline-none"
+                    placeholder="eg. Beautiful Apartment In Miami"
+                    defaultValue={property.name}
+                    required
+                />
             </div>
 
             <div className="mb-4">
                 <div className="flex justify-between items-center mb-2">
-                    <label htmlFor="description" className="block text-gray-700 font-bold">Description</label>
-                    <button type="button" onClick={generateAIDescription} disabled={aiLoading} className="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full flex items-center gap-1">
+                    <label htmlFor="description" className="block text-gray-700 dark:text-gray-200 font-bold">
+                        Description
+                    </label>
+                    <button
+                        type="button"
+                        onClick={generateAIDescription}
+                        disabled={aiLoading}
+                        className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-200 px-3 py-1 rounded-full flex items-center gap-1 border border-purple-200 dark:border-purple-700"
+                    >
                         {aiLoading ? <FaSpinner className="animate-spin" /> : <FaMagic />} AI Write
                     </button>
                 </div>
-                <textarea id="description" name="description" className="border rounded w-full py-2 px-3" rows="6" defaultValue={property.description}></textarea>
+                <textarea
+                    id="description"
+                    name="description"
+                    className="border rounded w-full py-2 px-3 bg-white dark:bg-gray-700 text-gray-700 dark:text-white dark:border-gray-600 focus:outline-none"
+                    rows="6"
+                    defaultValue={property.description}
+                    placeholder="Add an optional description of your property"
+                ></textarea>
             </div>
 
-            <div className="mb-4 bg-blue-50 p-4">
-                <label className="block text-gray-700 font-bold mb-2">Location</label>
-                <input type="text" id="street" name="location.street" className="border rounded w-full py-2 px-3 mb-2" placeholder="Street" defaultValue={property.location.street} />
-                <input type="text" id="city" name="location.city" className="border rounded w-full py-2 px-3 mb-2" placeholder="City" defaultValue={property.location.city} required />
-                <input type="text" id="state" name="location.state" className="border rounded w-full py-2 px-3 mb-2" placeholder="State" defaultValue={property.location.state} required />
-                <input type="text" id="zipcode" name="location.zipCode" className="border rounded w-full py-2 px-3 mb-2" defaultValue={property.location.zipCode} placeholder="ZipCode" />
+            <div className="mb-4 bg-gray-50 dark:bg-gray-700 p-4 rounded-md border border-gray-200 dark:border-gray-600">
+                <label className="block text-gray-700 dark:text-gray-200 font-bold mb-2">Location</label>
+                <input type="text" id="street" name="location.street" className="border rounded w-full py-2 px-3 mb-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-white dark:border-gray-600" placeholder="Street" defaultValue={property.location.street} />
+                <input type="text" id="city" name="location.city" className="border rounded w-full py-2 px-3 mb-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-white dark:border-gray-600" placeholder="City" defaultValue={property.location.city} required />
+                <input type="text" id="state" name="location.state" className="border rounded w-full py-2 px-3 mb-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-white dark:border-gray-600" placeholder="State" defaultValue={property.location.state} required />
+                <input type="text" id="zipcode" name="location.zipCode" className="border rounded w-full py-2 px-3 mb-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-white dark:border-gray-600" placeholder="ZipCode" defaultValue={property.location.zipCode} />
             </div>
 
             <div className="mb-4 flex flex-wrap">
                 <div className="w-full sm:w-1/3 pr-2">
-                    <label htmlFor="beds" className="block text-gray-700 font-bold mb-2">Beds</label>
-                    <input type="number" id="beds" name="beds" className="border rounded w-full py-2 px-3" defaultValue={property.beds} required />
+                    <label htmlFor="beds" className="block text-gray-700 dark:text-gray-200 font-bold mb-2">Beds</label>
+                    <input type="number" id="beds" name="beds" className="border rounded w-full py-2 px-3 bg-white dark:bg-gray-700 text-gray-700 dark:text-white dark:border-gray-600" defaultValue={property.beds} required />
                 </div>
                 <div className="w-full sm:w-1/3 px-2">
-                    <label htmlFor="baths" className="block text-gray-700 font-bold mb-2">Baths</label>
-                    <input type="number" id="baths" name="baths" className="border rounded w-full py-2 px-3" defaultValue={property.baths} required />
+                    <label htmlFor="baths" className="block text-gray-700 dark:text-gray-200 font-bold mb-2">Baths</label>
+                    <input type="number" id="baths" name="baths" className="border rounded w-full py-2 px-3 bg-white dark:bg-gray-700 text-gray-700 dark:text-white dark:border-gray-600" defaultValue={property.baths} required />
                 </div>
                 <div className="w-full sm:w-1/3 pl-2">
-                    <label htmlFor="square_feet" className="block text-gray-700 font-bold mb-2">Square Feet</label>
-                    <input type="number" id="square_feet" name="square_feet" className="border rounded w-full py-2 px-3" defaultValue={property.square_feet} required />
+                    <label htmlFor="square_feet" className="block text-gray-700 dark:text-gray-200 font-bold mb-2">Square Feet</label>
+                    <input type="number" id="square_feet" name="square_feet" className="border rounded w-full py-2 px-3 bg-white dark:bg-gray-700 text-gray-700 dark:text-white dark:border-gray-600" defaultValue={property.square_feet} required />
                 </div>
             </div>
 
             <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">Amenities</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label className="block text-gray-700 dark:text-gray-200 font-bold mb-2">Amenities</label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-gray-700 dark:text-gray-300">
                     <div><input type="checkbox" id="amenity_wifi" name="amenities" value="Wifi" className="mr-2" defaultChecked={property.amenities.includes("Wifi")} /><label htmlFor="amenity_wifi">Wifi</label></div>
                     <div><input type="checkbox" id="amenity_kitchen" name="amenities" value="Full kitchen" className="mr-2" defaultChecked={property.amenities.includes("Full kitchen")} /><label htmlFor="amenity_kitchen">Full kitchen</label></div>
                     <div><input type="checkbox" id="amenity_washer_dryer" name="amenities" value="Washer & Dryer" className="mr-2" defaultChecked={property.amenities.includes("Washer & Dryer")} /><label htmlFor="amenity_washer_dryer">Washer & Dryer</label></div>
@@ -240,30 +259,30 @@ const PropertyEditForm = ({ property }) => {
                 </div>
             </div>
 
-            <div className="mb-4 bg-blue-50 p-4">
-                <label className="block text-gray-700 font-bold mb-2">Rates (Leave blank if not applicable)</label>
+            <div className="mb-4 bg-gray-50 dark:bg-gray-700 p-4 rounded-md border border-gray-200 dark:border-gray-600">
+                <label className="block text-gray-700 dark:text-gray-200 font-bold mb-2">Rates (Leave blank if not applicable)</label>
                 <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-                    <div className="flex items-center"><label htmlFor="weekly_rate" className="mr-2">Weekly</label><input type="number" id="weekly_rate" name="rates.weekly" className="border rounded w-full py-2 px-3" defaultValue={property.rates.weekly} /></div>
-                    <div className="flex items-center"><label htmlFor="monthly_rate" className="mr-2">Monthly</label><input type="number" id="monthly_rate" name="rates.monthly" className="border rounded w-full py-2 px-3" defaultValue={property.rates.monthly} /></div>
-                    <div className="flex items-center"><label htmlFor="nightly_rate" className="mr-2">Nightly</label><input type="number" id="nightly_rate" name="rates.nightly" className="border rounded w-full py-2 px-3" defaultValue={property.rates.nightly} /></div>
+                    <div className="flex items-center"><label htmlFor="weekly_rate" className="mr-2 dark:text-gray-200">Weekly</label><input type="number" id="weekly_rate" name="rates.weekly" className="border rounded w-full py-2 px-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-white dark:border-gray-600" defaultValue={property.rates.weekly} /></div>
+                    <div className="flex items-center"><label htmlFor="monthly_rate" className="mr-2 dark:text-gray-200">Monthly</label><input type="number" id="monthly_rate" name="rates.monthly" className="border rounded w-full py-2 px-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-white dark:border-gray-600" defaultValue={property.rates.monthly} /></div>
+                    <div className="flex items-center"><label htmlFor="nightly_rate" className="mr-2 dark:text-gray-200">Nightly</label><input type="number" id="nightly_rate" name="rates.nightly" className="border rounded w-full py-2 px-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-white dark:border-gray-600" defaultValue={property.rates.nightly} /></div>
                 </div>
             </div>
 
             <div className="mb-4">
-                <label htmlFor="seller_name" className="block text-gray-700 font-bold mb-2">Seller Name</label>
-                <input type="text" id="seller_name" name="seller_info.name" className="border rounded w-full py-2 px-3" defaultValue={property.seller_info.name} />
+                <label htmlFor="seller_name" className="block text-gray-700 dark:text-gray-200 font-bold mb-2">Seller Name</label>
+                <input type="text" id="seller_name" name="seller_info.name" className="border rounded w-full py-2 px-3 bg-white dark:bg-gray-700 text-gray-700 dark:text-white dark:border-gray-600" placeholder="Name" defaultValue={property.seller_info.name} />
             </div>
             <div className="mb-4">
-                <label htmlFor="seller_email" className="block text-gray-700 font-bold mb-2">Seller Email</label>
-                <input type="email" id="seller_email" name="seller_info.email" className="border rounded w-full py-2 px-3" defaultValue={property.seller_info.email} required />
+                <label htmlFor="seller_email" className="block text-gray-700 dark:text-gray-200 font-bold mb-2">Seller Email</label>
+                <input type="email" id="seller_email" name="seller_info.email" className="border rounded w-full py-2 px-3 bg-white dark:bg-gray-700 text-gray-700 dark:text-white dark:border-gray-600" placeholder="john@example.com" defaultValue={property.seller_info.email} required />
             </div>
             <div className="mb-4">
-                <label htmlFor="seller_phone" className="block text-gray-700 font-bold mb-2">Seller Phone</label>
-                <input type="tel" id="seller_phone" name="seller_info.phone" className="border rounded w-full py-2 px-3" defaultValue={property.seller_info.phone} required />
+                <label htmlFor="seller_phone" className="block text-gray-700 dark:text-gray-200 font-bold mb-2">Seller Phone</label>
+                <input type="tel" id="seller_phone" name="seller_info.phone" className="border rounded w-full py-2 px-3 bg-white dark:bg-gray-700 text-gray-700 dark:text-white dark:border-gray-600" placeholder="555-555-5555" defaultValue={property.seller_info.phone} required />
             </div>
 
             <div>
-                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline" type="submit">
+                <button className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline transition-colors" type="submit">
                     Update Property
                 </button>
             </div>

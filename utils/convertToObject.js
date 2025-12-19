@@ -1,8 +1,10 @@
 export function convertToSerializableObject(leanDocument) {
-    for (const key of Object.keys(leanDocument)) {
-        if (leanDocument[key].toJSON && leanDocument[key].toString) {
-            leanDocument[key] = leanDocument[key].toString();
-        }
+    // 1. Veri yoksa veya null ise, direkt null dön (Hata verme)
+    if (!leanDocument) {
+        return null;
     }
-    return leanDocument;
+
+    // 2. En güvenli ve temiz yöntem: String'e çevirip tekrar JSON yap
+    // Bu işlem ObjectId'leri stringe, Tarihleri stringe çevirir ve null alanları korur.
+    return JSON.parse(JSON.stringify(leanDocument));
 }

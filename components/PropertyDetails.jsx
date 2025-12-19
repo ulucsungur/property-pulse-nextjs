@@ -12,22 +12,18 @@ const PropertyMap = dynamic(() => import('./PropertyMap'), {
 const PropertyDetails = ({ property }) => {
     return (
         <main>
-            <div
-                className="bg-white p-6 rounded-lg shadow-md text-center md:text-left"
-            >
-                <div className="text-gray-500 mb-4">{property.type}</div>
-                <h1 className="text-3xl font-bold mb-4">{property.name}</h1>
-                <div
-                    className="text-gray-500 mb-4 flex align-middle justify-center md:justify-start"
-                >
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center md:text-left border border-gray-100 dark:border-gray-700">
+                <div className="text-gray-500 dark:text-gray-400 mb-4">{property.type}</div>
+                <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">{property.name}</h1>
+                <div className="text-gray-500 dark:text-gray-300 mb-4 flex align-middle justify-center md:justify-start">
                     <FaMapMarker className="mr-1 mt-1 text-orange-700" />
-                    <p className="text-orange-700">
+                    <p className="text-orange-700 dark:text-orange-400">
                         {property.location.street}, {property.location.city}, {property.location.state}{" "}
                         {property.location.zipcode}
                     </p>
                 </div>
 
-                <h3 className="text-lg font-bold my-6 bg-gray-800 text-white p-2">
+                <h3 className="text-lg font-bold my-6 bg-gray-800 dark:bg-gray-700 text-white p-2">
                     Rates & Options
                 </h3>
                 <div className="flex flex-col md:flex-row justify-around">
@@ -77,7 +73,7 @@ const PropertyDetails = ({ property }) => {
                 </div>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-6">
                 <h3 className="text-lg font-bold mb-6">Description & Details</h3>
                 <div
                     className="flex justify-center gap-4 text-blue-500 mb-4 text-xl space-x-9"
@@ -100,7 +96,7 @@ const PropertyDetails = ({ property }) => {
                 </p>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-6">
                 <h3 className="text-lg font-bold mb-6">Amenities</h3>
 
                 <ul
@@ -119,7 +115,7 @@ const PropertyDetails = ({ property }) => {
                 </ul>
             </div>
             {/* <!-- Map --> */}
-            <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-6">
                 <PropertyMap property={property} />
             </div>
         </main>);

@@ -139,28 +139,31 @@ const ProfilePage = () => {
             toast.error("Bir hata oluştu");
         }
     };
+
     const displayImage = previewImage ||
         (formData.image && formData.image.startsWith('http') ? formData.image : profileDefault);
 
     return (
-        <section className="bg-blue-50 min-h-screen">
+        // DÜZELTME 1: Sayfa Arka Planı (dark:bg-gray-900)
+        <section className="bg-blue-50 dark:bg-gray-900 min-h-screen">
             <div className="container m-auto py-10 px-4">
-                <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border">
-                    <h1 className="text-3xl font-bold mb-8 text-gray-800">Hesabım</h1>
+                {/* DÜZELTME 2: Ana Kutu Arka Planı (dark:bg-gray-800) */}
+                <div className="bg-white dark:bg-gray-800 px-6 py-8 mb-4 shadow-md rounded-md border border-gray-200 dark:border-gray-700">
+                    <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">Hesabım</h1>
 
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
 
                         {/* --- SOL TARA: PROFİL KARTI --- */}
                         <div className="lg:col-span-1">
-                            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 text-center sticky top-24">
+                            {/* DÜZELTME 3: Profil Kartı Arka Planı (dark:bg-gray-700) */}
+                            <div className="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-600 text-center sticky top-24">
 
-                                {/* DÜZELTME: relative ve sizes eklendi */}
                                 <div className="relative w-36 h-36 mx-auto mb-4 group">
                                     <Image
                                         src={displayImage}
                                         alt="User"
                                         fill
-                                        className="rounded-full object-cover border-4 border-white shadow-md"
+                                        className="rounded-full object-cover border-4 border-white dark:border-gray-500 shadow-md"
                                         sizes="(max-width: 768px) 100vw, 150px"
                                         priority
                                     />
@@ -174,9 +177,9 @@ const ProfilePage = () => {
 
                                 {!isEditing ? (
                                     <>
-                                        <h2 className="text-2xl font-bold text-gray-800">{formData.username} {formData.surname}</h2>
-                                        <p className="text-gray-500 mb-1">{formData.email}</p>
-                                        {formData.country && <p className="text-sm text-gray-400 mb-4">{formData.country}</p>}
+                                        <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{formData.username} {formData.surname}</h2>
+                                        <p className="text-gray-500 dark:text-gray-300 mb-1">{formData.email}</p>
+                                        {formData.country && <p className="text-sm text-gray-400 dark:text-gray-400 mb-4">{formData.country}</p>}
 
                                         <button
                                             onClick={() => setIsEditing(true)}
@@ -187,25 +190,26 @@ const ProfilePage = () => {
                                     </>
                                 ) : (
                                     <form onSubmit={handleSubmit} className="text-left space-y-3">
+                                        {/* DÜZELTME 4: Edit Inputları (dark mode uyumlu) */}
                                         <div>
-                                            <label className="text-xs font-bold text-gray-500 uppercase">Ad</label>
-                                            <input name="username" type="text" value={formData.username} onChange={handleChange} className="w-full border rounded p-2 text-sm" required />
+                                            <label className="text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Ad</label>
+                                            <input name="username" type="text" value={formData.username} onChange={handleChange} className="w-full border rounded p-2 text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600" required />
                                         </div>
                                         <div>
-                                            <label className="text-xs font-bold text-gray-500 uppercase">Soyad</label>
-                                            <input name="surname" type="text" value={formData.surname} onChange={handleChange} className="w-full border rounded p-2 text-sm" placeholder="Soyadınız" />
+                                            <label className="text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Soyad</label>
+                                            <input name="surname" type="text" value={formData.surname} onChange={handleChange} className="w-full border rounded p-2 text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder="Soyadınız" />
                                         </div>
                                         <div>
-                                            <label className="text-xs font-bold text-gray-500 uppercase">Telefon</label>
-                                            <input name="phone" type="tel" value={formData.phone} onChange={handleChange} className="w-full border rounded p-2 text-sm" placeholder="555-555-5555" />
+                                            <label className="text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Telefon</label>
+                                            <input name="phone" type="tel" value={formData.phone} onChange={handleChange} className="w-full border rounded p-2 text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder="555-555-5555" />
                                         </div>
                                         <div>
-                                            <label className="text-xs font-bold text-gray-500 uppercase">Ülke</label>
-                                            <input name="country" type="text" value={formData.country} onChange={handleChange} className="w-full border rounded p-2 text-sm" placeholder="Türkiye" />
+                                            <label className="text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Ülke</label>
+                                            <input name="country" type="text" value={formData.country} onChange={handleChange} className="w-full border rounded p-2 text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder="Türkiye" />
                                         </div>
                                         <div>
-                                            <label className="text-xs font-bold text-gray-500 uppercase">Doğum Tarihi</label>
-                                            <input name="dateOfBirth" type="date" value={formData.dateOfBirth} onChange={handleChange} className="w-full border rounded p-2 text-sm" />
+                                            <label className="text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Doğum Tarihi</label>
+                                            <input name="dateOfBirth" type="date" value={formData.dateOfBirth} onChange={handleChange} className="w-full border rounded p-2 text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600" />
                                         </div>
 
                                         <div className="flex gap-2 pt-2">
@@ -223,11 +227,11 @@ const ProfilePage = () => {
 
                         {/* --- SAĞ TARAF: İLANLARIM --- */}
                         <div className="lg:col-span-3">
-                            <h2 className="text-2xl font-bold mb-6 border-b pb-2">İlanlarım</h2>
+                            <h2 className="text-2xl font-bold mb-6 border-b pb-2 text-gray-800 dark:text-white dark:border-gray-600">İlanlarım</h2>
 
                             {!loading && properties.length === 0 && (
-                                <div className="text-center py-10 bg-white rounded-lg border border-dashed border-gray-300">
-                                    <p className="text-gray-500 mb-4">Henüz hiç ilan yayınlamadınız.</p>
+                                <div className="text-center py-10 bg-white dark:bg-gray-800 rounded-lg border border-dashed border-gray-300 dark:border-gray-600">
+                                    <p className="text-gray-500 dark:text-gray-300 mb-4">Henüz hiç ilan yayınlamadınız.</p>
                                     <Link href="/properties/add" className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition">
                                         İlk İlanını Ekle
                                     </Link>
@@ -235,17 +239,14 @@ const ProfilePage = () => {
                             )}
 
                             {loading ? (
-                                <p className="text-center text-gray-500">Yükleniyor...</p>
+                                <p className="text-center text-gray-500 dark:text-gray-300">Yükleniyor...</p>
                             ) : (
                                 <div className="grid grid-cols-1 gap-6">
                                     {properties.map((property, index) => (
-                                        <div key={property._id} className="bg-white p-4 rounded-xl shadow-sm flex flex-col md:flex-row justify-between items-center gap-6 border border-gray-100 hover:shadow-md transition">
+                                        // DÜZELTME 5: İlan Kartı Arka Planı (dark:bg-gray-700)
+                                        <div key={property._id} className="bg-white dark:bg-gray-700 p-4 rounded-xl shadow-sm flex flex-col md:flex-row justify-between items-center gap-6 border border-gray-100 dark:border-gray-600 hover:shadow-md transition">
                                             {/* Resim */}
-
-                                            <Link
-                                                href={`/properties/${property._id}`}
-                                                className="relative w-full md:w-48 h-32 flex-shrink-0 block"
-                                            >
+                                            <Link href={`/properties/${property._id}`} className="relative w-full md:w-48 h-32 flex-shrink-0 block">
                                                 <Image
                                                     src={property.images[0]}
                                                     alt={property.name}
@@ -256,27 +257,29 @@ const ProfilePage = () => {
                                                 />
                                             </Link>
 
+                                            {/* Başlık ve Adres */}
                                             <div className="flex-1 w-full text-center md:text-left">
-                                                <div className="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">{property.type}</div>
-                                                <Link href={`/properties/${property._id}`} className="font-bold text-xl text-gray-800 hover:text-blue-600 mb-2 block line-clamp-1">
+                                                <div className="text-xs text-gray-400 dark:text-gray-300 uppercase font-bold tracking-wider mb-1">{property.type}</div>
+                                                <Link href={`/properties/${property._id}`} className="font-bold text-xl text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 mb-2 block line-clamp-1">
                                                     {property.name}
                                                 </Link>
-                                                <p className="text-gray-500 text-sm">
+                                                <p className="text-gray-500 dark:text-gray-300 text-sm">
                                                     <i className="fa-solid fa-location-dot mr-1"></i>
                                                     {property.location.street}, {property.location.city}
                                                 </p>
                                             </div>
 
+                                            {/* Butonlar */}
                                             <div className="flex gap-3 w-full md:w-auto justify-center">
                                                 <Link
                                                     href={`/properties/${property._id}/edit`}
-                                                    className="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-200 transition flex items-center gap-2"
+                                                    className="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-200 px-4 py-2 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition flex items-center gap-2"
                                                 >
                                                     <FaEdit /> <span className="hidden md:inline">Düzenle</span>
                                                 </Link>
                                                 <button
                                                     onClick={() => handleDeleteProperty(property._id)}
-                                                    className="bg-red-100 text-red-600 px-4 py-2 rounded-lg hover:bg-red-200 transition flex items-center gap-2"
+                                                    className="bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-200 px-4 py-2 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition flex items-center gap-2"
                                                 >
                                                     <FaTrash /> <span className="hidden md:inline">Sil</span>
                                                 </button>

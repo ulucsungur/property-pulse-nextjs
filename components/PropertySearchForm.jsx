@@ -29,7 +29,7 @@ const PropertySearchForm = () => {
                     type="text"
                     id="location"
                     placeholder="Enter Location (City, State, Zip, etc)"
-                    className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
+                    className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring focus:ring-blue-500 border dark:border-gray-600"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                 />
@@ -38,7 +38,7 @@ const PropertySearchForm = () => {
                 <label htmlFor="property-type" className="sr-only">Property Type</label>
                 <select
                     id="property-type"
-                    className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
+                    className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring focus:ring-blue-500 border dark:border-gray-600"
                     value={propertyType}
                     onChange={(e) => setPropertyType(e.target.value)}
                 >

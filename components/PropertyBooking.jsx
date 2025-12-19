@@ -76,7 +76,7 @@ const PropertyBooking = ({ property }) => {
     };
 
     return (
-        <div className="bg-white p-6 rounded-b-lg shadow-md border-t-0">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-b-lg shadow-md border-t-0">
             {/* Not: rounded-b-lg yaptık çünkü üstüne sekme (tab) gelecek */}
 
             {!nightlyRate ? (
@@ -92,7 +92,7 @@ const PropertyBooking = ({ property }) => {
 
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
-                    <label className="block text-gray-700 font-bold mb-2 flex items-center gap-2">
+                    <label className="block text-gray-700 dark:text-gray-300 font-bold mb-2 flex items-center gap-2">
                         <FaCalendarAlt className="text-blue-500" /> Giriş Tarihi
                     </label>
                     <DatePicker
@@ -108,7 +108,7 @@ const PropertyBooking = ({ property }) => {
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-gray-700 font-bold mb-2 flex items-center gap-2">
+                    <label className="block text-gray-700 dark:text-gray-300 font-bold mb-2 flex items-center gap-2">
                         <FaCalendarAlt className="text-red-500" /> Çıkış Tarihi
                     </label>
                     <DatePicker
@@ -119,7 +119,7 @@ const PropertyBooking = ({ property }) => {
                         endDate={endDate}
                         minDate={startDate || new Date()}
                         placeholderText="Tarih Seçin"
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-60"
                         disabled={!startDate}
                     />
                 </div>
