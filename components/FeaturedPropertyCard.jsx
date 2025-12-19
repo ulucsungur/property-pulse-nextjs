@@ -15,7 +15,7 @@ const FeaturedPropertyCard = ({ property }) => {
     };
     return (
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md relative flex flex-col md:flex-row border border-gray-100 dark:border-gray-700">
-            <div className="relative w-full md:w-2/5">
+            <div className="relative w-full aspect-[4/3] md:aspect-auto md:w-2/5">
                 <Link href={`/properties/${property._id}`} className="block h-full">
                     <Image
                         src={property.images[0]}
