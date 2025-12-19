@@ -59,7 +59,7 @@ const PropertyBooking = ({ property }) => {
             const data = await res.json();
 
             if (res.ok) {
-                toast.success("Rezervasyon talebiniz başarıyla alındı!");
+                toast.success("Your reservation request has been successfully received!");
                 setUnreadCount((prev) => prev + 1);
                 // Formu temizle
                 setStartDate(null);
@@ -68,8 +68,8 @@ const PropertyBooking = ({ property }) => {
                 toast.error(data.error || "Bir hata oluştu.");
             }
         } catch (error) {
-            console.error("Rezervasyon hatası:", error);
-            toast.error("Sunucu ile iletişim kurulamadı.");
+            console.error("Reservation error:", error);
+            toast.error("We were unable to communicate with the server.");
         } finally {
             setLoading(false);
         }
@@ -81,7 +81,7 @@ const PropertyBooking = ({ property }) => {
 
             {!nightlyRate ? (
                 <div className="text-red-500 text-center mb-4">
-                    Bu mülk için gecelik kiralama aktif değil. Mesaj atınız.
+                    This property is not currently available for overnight rental. Please send a message.
                 </div>
             ) : (
                 <div className="text-center mb-6">
@@ -135,7 +135,7 @@ const PropertyBooking = ({ property }) => {
                             <span>${nightlyRate}</span>
                         </div>
                         <div className="flex justify-between text-xl font-bold text-blue-800 border-t border-blue-200 pt-2">
-                            <span>Toplam:</span>
+                            <span>Total:</span>
                             <span>${totalPrice}</span>
                         </div>
                     </div>
@@ -146,7 +146,7 @@ const PropertyBooking = ({ property }) => {
                     type="submit"
                     disabled={!nightlyRate || days === 0 || loading}
                 >
-                    {loading ? "İşleniyor..." : <><FaPaperPlane /> Rezervasyon Yap</>}
+                    {loading ? "Processing..." : <><FaPaperPlane /> Rezervasyon Yap</>}
                 </button>
             </form>
         </div>

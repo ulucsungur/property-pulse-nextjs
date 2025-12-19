@@ -30,20 +30,20 @@ const Hero = () => {
                         <button
                             onClick={() => setSearchType('classic')}
                             className={`flex items-center gap-2 pb-2 text-md font-medium transition-all ${searchType === 'classic'
-                                    ? 'text-blue-600 border-b-2 border-blue-600'
-                                    : 'text-gray-500 hover:text-gray-700'
+                                ? 'text-blue-600 border-b-2 border-blue-600'
+                                : 'text-gray-500 hover:text-gray-700'
                                 }`}
                         >
-                            <FaSearch /> Konum ile Ara
+                            <FaSearch /> Search by Location
                         </button>
                         <button
                             onClick={() => setSearchType('ai')}
                             className={`flex items-center gap-2 pb-2 text-md font-medium transition-all ${searchType === 'ai'
-                                    ? 'text-blue-600 border-b-2 border-blue-600'
-                                    : 'text-gray-500 hover:text-gray-700'
+                                ? 'text-blue-600 border-b-2 border-blue-600'
+                                : 'text-gray-500 hover:text-gray-700'
                                 }`}
                         >
-                            <FaMagic className="text-purple-500" /> Yapay Zeka ile Ara
+                            <FaMagic className="text-purple-500" /> Search with AI
                         </button>
                     </div>
 

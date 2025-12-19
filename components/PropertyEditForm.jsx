@@ -1,17 +1,24 @@
 'use client';
-import { useState } from "react"; // State eklendi
+import { useState } from "react";
 import updateProperty from "@/app/actions/updateProperty";
 import { toast } from "react-toastify";
 import { PROPERTY_TYPES } from "@/config/propertyTypes";
-import { FaMagic, FaSpinner } from "react-icons/fa"; // İkonlar eklendi
+import { FaMagic, FaSpinner, FaTrash, FaPlus } from "react-icons/fa";
 
 const PropertyEditForm = ({ property }) => {
     const updatePropertyById = updateProperty.bind(null, property._id);
-    const [aiLoading, setAiLoading] = useState(false); // AI Loading State
+    const [aiLoading, setAiLoading] = useState(false);
 
-    // --- YAPAY ZEKA METİN ÜRETİCİ (AddForm ile Aynı Mantık) ---
+    // --- RESİM STATE'LERİ ---
+    // Silinecek resimlerin URL'lerini tutar
+    const [deletedImages, setDeletedImages] = useState([]);
+    // Ekranda gösterilen mevcut resimler
+    const [visibleImages, setVisibleImages] = useState(property.images || []);
+    // Yeni seçilen dosyaların önizlemesi
+    const [newImagesPreview, setNewImagesPreview] = useState([]);
+
+    // --- YAPAY ZEKA METİN ÜRETİCİ ---
     const generateAIDescription = async () => {
-        // Formdaki mevcut verileri topla (Kullanıcı değiştirmiş olabilir)
         const name = document.getElementById("name").value;
         const type = document.getElementById("type").value;
         const city = document.getElementById("city").value;
@@ -19,7 +26,6 @@ const PropertyEditForm = ({ property }) => {
         const beds = document.getElementById("beds").value;
         const baths = document.getElementById("baths").value;
 
-        // Olanaklar
         const amenities = Array.from(document.querySelectorAll('input[name="amenities"]:checked'))
             .map(cb => cb.value)
             .join(", ");
@@ -43,42 +49,61 @@ const PropertyEditForm = ({ property }) => {
 
             if (res.ok) {
                 document.getElementById("description").value = data.description;
-                toast.success("Açıklama yapay zeka tarafından güncellendi! ✨");
+                toast.success("Açıklama güncellendi! ✨");
             } else {
-                toast.error("Yapay zeka hatası: " + (data.error || "Bilinmeyen hata"));
+                toast.error("Hata: " + (data.error || "Bilinmeyen hata"));
             }
 
         } catch (error) {
             console.error(error);
-            toast.error("Sunucu ile iletişim kurulamadı.");
+            toast.error("Sunucu hatası.");
         } finally {
             setAiLoading(false);
         }
     };
-    // ---------------------------------------------------------
 
-    // --- VALIDATION VE GÖNDERME ---
+    // --- MEVCUT RESMİ SİLME ---
+    const handleDeleteImage = (imageUrl) => {
+        setDeletedImages((prev) => [...prev, imageUrl]);
+        setVisibleImages((prev) => prev.filter((img) => img !== imageUrl));
+    };
+
+    // --- YENİ RESİM SEÇME VE ÖNİZLEME ---
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+
+        // Tarayıcı hafızasında geçici URL oluşturup gösterelim
+        const previews = files.map(file => URL.createObjectURL(file));
+        setNewImagesPreview(previews);
+    };
+
+    // --- FORM GÖNDERME ---
     const handleFormSubmit = async (formData) => {
+        // Silinecek resimleri form verisine ekle
+        deletedImages.forEach((img) => {
+            formData.append("delete_images", img);
+        });
+
+        // Validasyonlar
         const email = formData.get("seller_info.email");
         const phone = formData.get("seller_info.phone");
-
         const phoneRegex = /^[\d-]+$/;
         const strictPhoneRegex = /^(\d{3}-?\d{3}-?\d{4}|\d{10,11})$/;
 
         if (phone) {
             if (!phoneRegex.test(phone)) {
-                toast.error("Telefon alanına Email veya Harf giremezsiniz!");
+                toast.error("Telefon alanına harf giremezsiniz!");
                 return;
             }
             if (!strictPhoneRegex.test(phone)) {
-                toast.error("Telefon formatı hatalı! (Örn: 555-555-5555)");
+                toast.error("Telefon formatı hatalı!");
                 return;
             }
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email || !emailRegex.test(email)) {
-            toast.error("Lütfen geçerli bir Email adresi girin!");
+            toast.error("Geçersiz Email!");
             return;
         }
 
@@ -96,9 +121,67 @@ const PropertyEditForm = ({ property }) => {
 
     return (
         <form action={handleFormSubmit}>
-            <h2 className="text-3xl text-center font-semibold mb-6">
-                Edit Property
-            </h2>
+            <h2 className="text-3xl text-center font-semibold mb-6">Edit Property</h2>
+
+            {/* --- RESİM YÖNETİM ALANI --- */}
+            <div className="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <label className="block text-gray-700 font-bold mb-3">Manage Images</label>
+
+                {/* 1. MEVCUT RESİMLER */}
+                {visibleImages.length > 0 ? (
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                        {visibleImages.map((img, index) => (
+                            <div key={index} className="relative group w-full h-32 rounded-lg overflow-hidden">
+                                {/* Normal img etiketi kullanıyoruz, sorunsuz görünmesi için */}
+                                <img
+                                    src={img}
+                                    alt={`Image ${index}`}
+                                    className="w-full h-full object-cover rounded-lg"
+                                />
+                                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-center justify-center">
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDeleteImage(img)}
+                                        className="bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-lg"
+                                        title="Delete Image"
+                                    >
+                                        <FaTrash />
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-gray-500 text-sm mb-4 italic">No images available.</p>
+                )}
+
+                {/* 2. YENİ RESİM EKLEME */}
+                <label className="block text-sm text-gray-600 mb-2 font-bold">Add New Images</label>
+                <div className="flex items-center justify-center w-full mb-4">
+                    <label htmlFor="new_images" className="flex flex-col items-center justify-center w-full h-32 border-2 border-blue-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-blue-50 transition">
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                            <FaPlus className="text-blue-500 text-2xl mb-2" />
+                            <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span></p>
+                            <p className="text-xs text-gray-500">MAX 4 images total</p>
+                        </div>
+                        {/* onChange olayını bağladık */}
+                        <input id="new_images" name="new_images" type="file" className="hidden" multiple accept="image/*" onChange={handleFileChange} />
+                    </label>
+                </div>
+
+                {/* 3. YENİ SEÇİLENLERİN ÖNİZLEMESİ */}
+                {newImagesPreview.length > 0 && (
+                    <div className="mt-4 p-2 bg-green-50 rounded-md border border-green-100">
+                        <p className="text-sm text-green-700 font-bold mb-2">Selected to Upload ({newImagesPreview.length}):</p>
+                        <div className="flex gap-2 overflow-x-auto pb-2">
+                            {newImagesPreview.map((src, i) => (
+                                <img key={i} src={src} className="w-20 h-20 object-cover rounded-md border border-green-300 shadow-sm" alt="Preview" />
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
+            {/* ------------------------------------- */}
 
             <div className="mb-4">
                 <label htmlFor="type" className="block text-gray-700 font-bold mb-2">Property Type</label>
@@ -154,7 +237,6 @@ const PropertyEditForm = ({ property }) => {
                     placeholder="Add an optional description of your property"
                 ></textarea>
             </div>
-            {/* ---------------------------------- */}
 
             <div className="mb-4 bg-blue-50 p-4">
                 <label className="block text-gray-700 font-bold mb-2">Location</label>

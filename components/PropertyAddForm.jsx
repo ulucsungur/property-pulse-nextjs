@@ -79,19 +79,19 @@ const PropertyAddForm = () => {
         // 2. Email Kontrolü
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email || !emailRegex.test(email)) {
-            toast.error("Lütfen geçerli bir Email adresi girin!");
+            toast.error("Please enter a valid email address!");
             return;
         }
 
         // --- SUNUCUYA GÖNDER ---
         try {
             await addProperty(formData);
-            toast.success("Mülk başarıyla eklendi!");
+            toast.success("Property added successfully!");
         } catch (error) {
             if (error.message === 'NEXT_REDIRECT' || error.message.includes('NEXT_REDIRECT')) {
                 throw error;
             }
-            console.error("Form Gönderme Hatası:", error);
+            console.error("Form Submission Error:", error);
             toast.error("Bir hata oluştu.");
         }
     };
@@ -151,7 +151,7 @@ const PropertyAddForm = () => {
                     name="description"
                     className="border rounded w-full py-2 px-3 focus:ring-2 focus:ring-purple-200 transition-all"
                     rows="6"
-                    placeholder="Mülkünüzü anlatın veya 'AI ile Yaz' butonuna basarak sihrin gerçekleşmesini bekleyin..."
+                    placeholder="Describe your property or press the 'Write with AI' button and wait for the magic to happen..."
                 ></textarea>
             </div>
             {/* ----------------------------------------- */}

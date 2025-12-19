@@ -23,7 +23,7 @@ const SemanticSearchBox = () => {
 
             // Eğer sunucu 200 OK dışı bir şey dönerse (örn: 500 hatası)
             if (!res.ok) {
-                console.error("API Hatası:", res.status);
+                console.error("API Error:", res.status);
                 setResults([]); // Sonuçları boşalt
                 return;
             }
@@ -34,13 +34,13 @@ const SemanticSearchBox = () => {
             if (Array.isArray(data)) {
                 setResults(data);
             } else {
-                console.error("Beklenmeyen veri formatı:", data);
+                console.error("Unexpected data format:", data);
                 setResults([]);
             }
 
             setHasSearched(true);
         } catch (error) {
-            console.error("Arama hatası:", error);
+            console.error("Search error:", error);
             setResults([]);
         } finally {
             setLoading(false);
@@ -52,7 +52,7 @@ const SemanticSearchBox = () => {
             <form onSubmit={handleSearch} className="w-full flex flex-col md:flex-row gap-2">
                 <input
                     type="text"
-                    placeholder="Hayalinizdeki evi tarif edin (Örn: Sarıyer'de deniz manzaralı villa)"
+                    placeholder="Describe your dream home (e.g., a sea-view villa in Sarıyer)."
                     className="flex-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 w-full"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
@@ -75,7 +75,7 @@ const SemanticSearchBox = () => {
                     {/* Sonuç Yoksa */}
                     {results.length === 0 && !loading && (
                         <p className="text-center text-gray-500 py-4">
-                            Kriterlerinize uygun ilan bulunamadı.
+                            No listings were found that match your criteria.
                         </p>
                     )}
 
@@ -110,7 +110,7 @@ const SemanticSearchBox = () => {
                                                     {property.type}
                                                 </span>
                                                 <span className="text-xs text-green-600 font-bold">
-                                                    %{(property.score * 100).toFixed(0)} Eşleşme
+                                                    %{(property.score * 100).toFixed(0)} Match
                                                 </span>
                                             </div>
                                         </div>
