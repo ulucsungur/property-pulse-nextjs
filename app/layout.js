@@ -5,8 +5,8 @@ import AuthProvider from "@/components/AuthProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GlobalProvider } from "@/context/GlobalContext";
-// 1. IMPORT EKLE
 import { ThemeProvider } from "@/components/ThemeProvider";
+import ScrollProgress from "@/components/ScrollProgress";
 
 export const metadata = {
   title: "PropertyPulse",
@@ -22,6 +22,7 @@ export default function RootLayout({ children }) {
           <body>
             {/* 2. THEME PROVIDER İLE SARMALA */}
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <ScrollProgress />
               <main>
                 <Navbar />
                 {children}

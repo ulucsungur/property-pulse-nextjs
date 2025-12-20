@@ -1,9 +1,13 @@
+'use client';
 import Image from "next/image";
 import Link from "next/link";
 import { FaBed, FaBath, FaRulerCombined, FaMoneyBill, FaMapMarker } from "react-icons/fa";
+import { motion } from 'framer-motion';
+import { fadeIn } from '@/utils/motion';
 
+const PropertyCard = ({ property, index }) => { // index prop'u alabilirsek harika olur (sırayla gelmesi için)
 
-const PropertyCard = ({ property }) => {
+    // ... getRateDisplay fonksiyonu aynı ...
     const getRateDisplay = () => {
         const { rates } = property;
         if (rates.monthly) {
@@ -15,11 +19,25 @@ const PropertyCard = ({ property }) => {
         }
     };
 
+    const itemVariants = {
+        hidden: { y: 20, opacity: 0 }, // Başlangıç: 50px aşağıda ve görünmez
+        show: {
+            y: 0,
+            opacity: 1,
+            transition: { type: 'spring', stiffness: 50, duration: 0.5 } // Bitiş: Yerinde ve görünür
+        }
+    };
+
     return (
-        <div className="rounded-xl shadow-md relative bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
-            <Link
-                href={`/properties/${property._id}`}
-            >
+        <motion.div
+            variants={itemVariants}
+            // initial="hidden"
+            // whileInView="show"
+            // viewport={{ once: true, amount: 0.1 }}
+            whileHover={{ y: -5 }}
+            className="rounded-xl shadow-md relative bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 transition-shadow hover:shadow-xl"
+        >
+            <Link href={`/properties/${property._id}`}>
                 <Image
                     src={property.images[0]}
                     alt=""
@@ -30,6 +48,8 @@ const PropertyCard = ({ property }) => {
                     className="w-full h-auto rounded-t-xl"
                 />
             </Link>
+
+            {/* ... geri kalan içerik (div className="p-4" ...) tamamen aynı kalsın ... */}
             <div className="p-4">
                 <div className="text-left md:text-center lg:text-left mb-6">
                     <div className="text-gray-600 dark:text-gray-400">{property.type}</div>
@@ -78,7 +98,7 @@ const PropertyCard = ({ property }) => {
                     </Link>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }
 

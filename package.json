@@ -12,6 +12,7 @@
     "bcryptjs": "^3.0.3",
     "chart.js": "^4.5.1",
     "cloudinary": "^2.8.0",
+    "framer-motion": "^12.23.26",
     "leaflet": "^1.9.4",
     "mapbox-gl": "^3.16.0",
     "mongodb": "^6.20.0",

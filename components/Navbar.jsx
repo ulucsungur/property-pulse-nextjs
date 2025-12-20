@@ -39,9 +39,9 @@ const Navbar = () => {
     const pathname = usePathname();
 
     return (
-        <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b ${isScrolled
-                ? "bg-blue-900/85 dark:bg-gray-900/85 backdrop-blur-md shadow-lg py-2 border-blue-800 dark:border-gray-800" // AŞAĞI İNİNCE: %85 Opaklık + Bulanıklık
-                : "bg-blue-900/70 dark:bg-gray-900/70 backdrop-blur-md py-4 border-transparent" // EN TEPEDE: %70 Opaklık + Bulanıklık
+        <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b ${isScrolled || pathname !== '/'
+            ? "bg-blue-900 dark:bg-gray-900 shadow-lg py-2 border-blue-800 dark:border-gray-800"
+            : "bg-blue-900/80 dark:bg-gray-900/80 backdrop-blur-md py-4 border-transparent"
             }`}>
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                 <div className="relative flex h-16 items-center justify-between">
@@ -97,7 +97,7 @@ const Navbar = () => {
                             <div className="hidden md:block">
                                 <div className="flex items-center gap-2">
                                     <Link href="/login" className="text-white hover:bg-white/10 rounded-md px-4 py-2 transition">Login</Link>
-                                    <Link href="/register" className="text-blue-900 bg-white hover:bg-gray-100 rounded-md px-4 py-2 font-medium transition shadow-md">Register</Link>
+                                    <Link href="/register" className="text-white hover:bg-white/10 rounded-md px-4 py-2 transition">Register</Link>
                                 </div>
                             </div>
                         ) : (

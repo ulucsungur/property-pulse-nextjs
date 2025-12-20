@@ -4,28 +4,40 @@ import PropertySearchForm from "./PropertySearchForm";
 import SemanticSearchBox from "./SemanticSearchBox";
 import { FaSearch, FaMagic } from 'react-icons/fa';
 
+// 1. IMPORTLARI EKLE
+import { motion } from 'framer-motion';
+import { fadeIn } from '@/utils/motion';
+
 const Hero = () => {
     const [searchType, setSearchType] = useState('classic');
 
     return (
-        // DÜZELTME 1: py-20 -> py-12 ve min-h düşürüldü
         <section className="bg-blue-700 dark:bg-gray-800 py-12 mb-4 min-h-[400px] flex flex-col justify-center pt-28 pb-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center w-full">
 
-                {/* DÜZELTME 2: mb-8 -> mb-6 (Başlık altı boşluk azaldı) */}
-                <div className="text-center mb-6">
-                    {/* Yazı boyutları bir tık küçültülebilir isteğe bağlı */}
+                {/* 2. BAŞLIK ANİMASYONU (Yukarıdan aşağı süzülsün) */}
+                <motion.div
+                    variants={fadeIn('down', 0.2)}
+                    initial="hidden"
+                    animate="show"
+                    className="text-center mb-6"
+                >
                     <h1 className="text-3xl font-extrabold text-white sm:text-4xl md:text-5xl">
                         Find The Perfect Rental
                     </h1>
                     <p className="my-3 text-lg text-white">
                         Discover the perfect property that suits your needs.
                     </p>
-                </div>
+                </motion.div>
 
-                <div className="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-2xl w-full max-w-3xl transform transition-all">
+                {/* 3. ARAMA KUTUSU ANİMASYONU (Aşağıdan yukarı süzülsün) */}
+                <motion.div
+                    variants={fadeIn('up', 0.5)}
+                    initial="hidden"
+                    animate="show"
+                    className="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-2xl w-full max-w-3xl transform transition-all"
+                >
 
-                    {/* Sekme Başlıkları - Daha kompakt */}
                     <div className="flex justify-center mb-4 space-x-6 border-b pb-2">
                         <button
                             onClick={() => setSearchType('classic')}
@@ -56,7 +68,7 @@ const Hero = () => {
                             </div>
                         )}
                     </div>
-                </div>
+                </motion.div>
 
             </div>
         </section>
