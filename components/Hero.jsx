@@ -9,7 +9,7 @@ const Hero = () => {
 
     return (
         // DÜZELTME 1: py-20 -> py-12 ve min-h düşürüldü
-        <section className="bg-blue-700 dark:bg-gray-800 py-12 mb-4 min-h-[400px] flex flex-col justify-center">
+        <section className="bg-blue-700 dark:bg-gray-800 py-12 mb-4 min-h-[400px] flex flex-col justify-center pt-28 pb-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center w-full">
 
                 {/* DÜZELTME 2: mb-8 -> mb-6 (Başlık altı boşluk azaldı) */}

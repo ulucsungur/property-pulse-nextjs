@@ -47,7 +47,7 @@ const ChartPage = () => {
     }
 
     return (
-        <main className="p-6">
+        <main className="p-6 pt-28 pb-20">
             <h1 className="text-2xl font-bold mb-6 text-center">İlan Verileri</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white dark:bg-gray-200 shadow rounded p-4 h-[400px] flex items-center justify-center">

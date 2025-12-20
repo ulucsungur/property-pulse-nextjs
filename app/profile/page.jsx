@@ -145,7 +145,7 @@ const ProfilePage = () => {
 
     return (
         // DÜZELTME 1: Sayfa Arka Planı (dark:bg-gray-900)
-        <section className="bg-blue-50 dark:bg-gray-900 min-h-screen">
+        <section className="bg-blue-50 dark:bg-gray-900 min-h-screen pt-28 pb-20">
             <div className="container m-auto py-10 px-4">
                 {/* DÜZELTME 2: Ana Kutu Arka Planı (dark:bg-gray-800) */}
                 <div className="bg-white dark:bg-gray-800 px-6 py-8 mb-4 shadow-md rounded-md border border-gray-200 dark:border-gray-700">

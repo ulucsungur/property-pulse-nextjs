@@ -32,7 +32,7 @@ const PropertiesPage = async ({ searchParams }) => {
     const showPagination = total > pageSize;
 
     return (
-        <section className="px-4 py-8">
+        <section className="px-4 py-8 pt-28 pb-20">
             <div className="container-xl lg:container m-auto px-4 py-6">
 
                 {/* Kullanıcıya ne aradığını gösterelim */}

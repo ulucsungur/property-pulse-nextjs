@@ -15,7 +15,7 @@ const SavedPropertiesPage = async () => {
     //console.log(bookmarks) // terminalde görebilirsin
 
     return (
-        <section className="px-4 py-8">
+        <section className="px-4 py-8 pt-28">
             <div className="container lg:container m-auto px-4 py-6">
                 <h1 className="text-3xl font-bold mb-6">Saved Properties</h1>
                 {bookmarks.length === 0 ? (
