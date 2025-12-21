@@ -151,19 +151,36 @@ const Navbar = () => {
             {isMobileMenuOpen && (
                 <div id="mobile-menu" className="bg-blue-800 dark:bg-gray-900 shadow-inner">
                     <div className="space-y-1 px-2 pb-3 pt-2">
-                        <Link href="/" className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20">Home</Link>
-                        <Link href="/properties" className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20">Properties</Link>
+                        <Link href="/"
+                            className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >Home</Link>
+                        <Link href="/properties" className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >Properties</Link>
                         {session && (
                             <>
-                                <Link href="/chart" className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20">Charts</Link>
-                                <Link href="/properties/add" className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20">Add Property</Link>
+                                <Link href="/chart"
+                                    className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >Charts</Link>
+                                <Link href="/properties/add"
+                                    className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >Add Property</Link>
                             </>
                         )}
 
                         {!session && (
                             <div className="border-t border-white/10 pt-4 mt-4 space-y-2">
-                                <Link href="/login" className="block text-white bg-gray-900/50 rounded-md px-3 py-2 text-base font-medium text-center hover:bg-gray-900">Login</Link>
-                                <Link href="/register" className="block text-blue-900 bg-white rounded-md px-3 py-2 text-base font-medium text-center">Register</Link>
+                                <Link href="/login"
+                                    className="block text-white bg-gray-900/50 rounded-md px-3 py-2 text-base font-medium text-center hover:bg-gray-900"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >Login</Link>
+                                <Link href="/register"
+                                    className="block text-blue-900 bg-white rounded-md px-3 py-2 text-base font-medium text-center"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >Register</Link>
                             </div>
                         )}
                     </div>
