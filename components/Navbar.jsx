@@ -75,6 +75,13 @@ const Navbar = () => {
                                 {/* Linklerdeki hover efektini modernleştirdik (white/10) */}
                                 <Link href="/" className={`${pathname === '/' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>Home</Link>
                                 <Link href="/properties" className={`${pathname === '/properties' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>Properties</Link>
+                                <Link
+                                    href='/blog'
+                                    className={`${pathname === '/blog' ? 'bg-black' : ''
+                                        } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                                >
+                                    Blog
+                                </Link>
                                 {session && (
                                     <>
                                         <Link href="/chart" className={`${pathname === '/chart' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>Charts</Link>
@@ -129,6 +136,14 @@ const Navbar = () => {
                                         <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 border dark:border-gray-700 animate-fade-in-down">
                                             <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700" onClick={() => setIsProfileMenuOpen(false)}>Your Profile</Link>
                                             <Link href="/properties/saved" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700" onClick={() => setIsProfileMenuOpen(false)}>Saved Properties</Link>
+                                            <Link
+                                                href='/blog/create'
+                                                className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700'
+                                                role='menuitem'
+                                                onClick={() => setIsProfileMenuOpen(false)}
+                                            >
+                                                Add Text
+                                            </Link>
                                             <button
                                                 className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 w-full text-left dark:text-red-400 dark:hover:bg-gray-700"
                                                 onClick={() => {
@@ -158,6 +173,14 @@ const Navbar = () => {
                         <Link href="/properties" className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >Properties</Link>
+                        <Link
+                            href='/blog'
+                            className={`${pathname === '/blog' ? 'bg-gray-900' : ''
+                                } text-white block rounded-md px-3 py-2 text-base font-medium`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            Blog
+                        </Link>
                         {session && (
                             <>
                                 <Link href="/chart"
