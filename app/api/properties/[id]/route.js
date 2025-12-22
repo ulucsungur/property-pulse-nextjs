@@ -15,7 +15,6 @@ export async function GET(request, { params }) {
         if (!property) {
             return NextResponse.json({ message: "Property Not Found" }, { status: 404 });
         }
-
         return NextResponse.json(property);
     } catch (error) {
         console.error(error);
