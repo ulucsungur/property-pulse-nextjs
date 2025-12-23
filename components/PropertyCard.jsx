@@ -79,6 +79,7 @@ const PropertyCard = ({ property, index }) => { // index prop'u alabilirsek hari
                 <div
                     className="flex justify-center gap-4 text-green-900 text-sm mb-4"
                 >
+                    <p><FaMoneyBill className="md:hidden lg:inline" /> Nightly</p>
                     <p><FaMoneyBill className="md:hidden lg:inline" /> Weekly</p>
                     <p><FaMoneyBill className="md:hidden lg:inline" /> Monthly</p>
                 </div>
