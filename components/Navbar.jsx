@@ -180,11 +180,6 @@ const Navbar = () => {
             {isMobileMenuOpen && (
                 <div id="mobile-menu" className="bg-blue-800 dark:bg-gray-900 shadow-inner">
                     <div className="space-y-1 px-2 pb-3 pt-2">
-                        <Link href="/"
-                            className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        >Home</Link>
-
                         {/* --- YENİ: Mobil İçin Yönetim Linki --- */}
                         {isAdminOrAgent && (
                             <Link href="/admin"
@@ -192,6 +187,10 @@ const Navbar = () => {
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >🚀 Yönetim Paneli</Link>
                         )}
+                        <Link href="/"
+                            className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >Home</Link>
 
                         <Link href="/properties" className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
                             onClick={() => setIsMobileMenuOpen(false)}
