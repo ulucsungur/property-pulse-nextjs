@@ -41,6 +41,16 @@ const UserSchema = new Schema(
             type: Date,
             required: false,
         },
+        role: {
+            type: String,
+            enum: ["customer", "agent", "admin"],
+            default: "customer", // Varsayılan olarak herkes müşteridir
+        },
+        status: {
+            type: String,
+            enum: ["active", "banned"],
+            default: "active",
+        },
         bookmarks: [
             {
                 type: Schema.Types.ObjectId,

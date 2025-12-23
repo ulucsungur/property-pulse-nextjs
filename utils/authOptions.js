@@ -10,6 +10,13 @@ export const authOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            authorization: {
+                params: {
+                    prompt: "consent",
+                    access_type: "offline",
+                    response_type: "code"
+                }
+            }
         }),
 
         GitHubProvider({
@@ -70,30 +77,50 @@ export const authOptions = {
                     const newUser = await User.create({
                         email: user.email,
                         username,
-                        image: profile.picture,
+                        image: profile?.picture || user.image,
+                        role: "customer", // Yeni kullanıcılar varsayılan olarak 'customer' rolünde başlar.
+                        status: "active"
                     });
                     user.id = newUser._id.toString();
                 } else {
                     user.id = userExists._id.toString();
                 }
+            } else if (account.provider === 'credentials') {
+                // Credentials ile giriş yapan kullanıcının ID'si authorize fonksiyonundan zaten geliyor
+                // user objesi zaten authorize fonksiyonundan dönen user objesi olacaktır
+                user.id = user._id.toString();
             }
             return true;
         },
+        // 2. jwt callback: Token'a userId, role ve status bilgilerini ekler.
 
         async jwt({ token, user }) {
+            await connectToDatabase();
+            // DÖNGÜYÜ KIRAN HAMLE: User modelini burada import ediyoruz
+            const User = (await import("@/models/User")).default;
             if (user) {
                 token.userId = user.id;
+                // Veritabanından kullanıcının güncel rol ve durumunu al
+                // Bu kısım, admin rolü değiştirdiğinde session'ın güncellenmesi için önemli
+                const dbUser = await User.findById(user.id);
+                if (dbUser) {
+                    token.role = dbUser.role;
+                    token.status = dbUser.status;
+                }
             }
             return token;
         },
-
+        // 3. session callback: Client tarafına gönderilen session objesine gerekli bilgileri ekler.
         async session({ session, token }) {
             if (session.user) {
                 session.user.id = token.userId;
+                session.user.role = token.role; // Rol bilgisini session'a ekle
+                session.user.status = token.status; // Durum bilgisini session'a ekle
             }
             return session;
         },
     },
+    secret: process.env.NEXTAUTH_SECRET,
 };
 // import GoogleProvider from "next-auth/providers/google";
 // import GitHubProvider from "next-auth/providers/github";

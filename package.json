@@ -11,6 +11,10 @@
     "@google/generative-ai": "^0.24.1",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
+    "@refinedev/core": "^5.0.7",
+    "@refinedev/nextjs-router": "^7.0.4",
+    "@refinedev/react-hook-form": "^5.0.3",
+    "@refinedev/simple-rest": "^6.0.1",
     "bcryptjs": "^3.0.3",
     "chart.js": "^4.5.1",
     "cloudinary": "^2.8.0",
@@ -28,6 +32,7 @@
     "react-datepicker": "^9.0.0",
     "react-dom": "^19.1.2",
     "react-geocode": "^2.0.1",
+    "react-hook-form": "^7.69.0",
     "react-icons": "^5.5.0",
     "react-leaflet": "^5.0.0",
     "react-map-gl": "^8.1.0",
@@ -36,6 +41,7 @@
     "react-share": "^5.2.2",
     "react-spinners": "^0.17.0",
     "react-toastify": "^11.0.5",
+    "recharts": "^3.6.0",
     "three": "^0.182.0"
   },
   "devDependencies": {
