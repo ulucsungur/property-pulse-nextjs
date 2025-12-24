@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import "./globals.css"; // CSS importun
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";

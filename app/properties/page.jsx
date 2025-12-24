@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import PropertyCard from '@/components/PropertyCard';
 import Pagination from '@/components/Pagination';
 import connectToDatabase from '@/config/database';

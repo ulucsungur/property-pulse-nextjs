@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    output: "standalone",
     experimental: {
         serverActions: {
             bodySizeLimit: '5mb', // Limiti 5MB'a çıkardık. İhtiyaca göre '10mb' yapabilirsiniz.
