@@ -141,7 +141,7 @@ const Navbar = () => {
                                                     className="block px-4 py-2 text-sm text-blue-600 font-bold hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-gray-700 border-b dark:border-gray-700"
                                                     onClick={() => setIsProfileMenuOpen(false)}
                                                 >
-                                                    🚀 Yönetim Paneli
+                                                    🚀 Admin Panel
                                                 </Link>
                                             )}
                                             {/* --------------------------------------------------- */}
@@ -185,7 +185,7 @@ const Navbar = () => {
                             <Link href="/admin"
                                 className="text-yellow-300 block rounded-md px-3 py-2 text-base font-bold hover:bg-black/20"
                                 onClick={() => setIsMobileMenuOpen(false)}
-                            >🚀 Yönetim Paneli</Link>
+                            >🚀 Admin Panel</Link>
                         )}
                         <Link href="/"
                             className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"

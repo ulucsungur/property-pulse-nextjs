@@ -24,19 +24,19 @@ export default function PropertyList() {
         fetchProperties();
     }, []);
 
-    if (loading) return <div className="p-8 text-gray-500">İlanlar yükleniyor...</div>;
+    if (loading) return <div className="p-8 text-gray-500">Ads are loading...</div>;
 
     return (
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-            <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
-                <h1 className="text-xl font-bold text-gray-800 dark:text-white">İlanlarım</h1>
+            <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center mt-6">
+                <h1 className="text-xl font-bold text-gray-800 dark:text-white">My ads</h1>
 
                 {/* YENİ EKLE BUTONU: Mevcut /properties/add sayfasına atar */}
                 <button
                     onClick={() => router.push("/properties/add")}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition"
                 >
-                    + Yeni İlan Ekle
+                    + Add new listing
                 </button>
             </div>
 
@@ -44,11 +44,11 @@ export default function PropertyList() {
                 <table className="w-full text-left text-sm text-gray-600 dark:text-gray-300">
                     <thead className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white font-semibold">
                         <tr>
-                            <th className="p-4">Görsel</th>
-                            <th className="p-4">Başlık</th>
-                            <th className="p-4">Konum</th>
-                            <th className="p-4">Fiyat</th>
-                            <th className="p-4 text-right">İşlemler</th>
+                            <th className="p-4">Image</th>
+                            <th className="p-4">Header</th>
+                            <th className="p-4">Location</th>
+                            <th className="p-4">Price</th>
+                            <th className="p-4 text-right">Transactions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -80,20 +80,20 @@ export default function PropertyList() {
                                             onClick={() => router.push(`/properties/${prop._id}/edit`)}
                                             className="text-blue-600 hover:text-blue-800 mr-3 font-medium"
                                         >
-                                            Düzenle (AI)
+                                            Edit (AI)
                                         </button>
 
                                         {/* SİL BUTONU: Hızlı silme için burada kalabilir */}
                                         <button
                                             onClick={async () => {
-                                                if (confirm("Silmek istediğine emin misin?")) {
+                                                if (confirm("Are you sure want to delete it?")) {
                                                     await fetch(`/api/admin/properties/${prop._id}`, { method: "DELETE" });
                                                     window.location.reload();
                                                 }
                                             }}
                                             className="text-red-500 hover:text-red-700 font-medium"
                                         >
-                                            Sil
+                                            Delete
                                         </button>
                                     </td>
                                 </tr>

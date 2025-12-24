@@ -5,7 +5,7 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import { FaPaperPlane, FaTimes } from "react-icons/fa";
 
 const MessageCard = ({ message }) => {
-    const [isRead, setIsRead] = useState(message.read);
+    const [isRead, setIsRead] = useState(message.isRead);
     const [isDeleted, setIsDeleted] = useState(false);
 
     const [isReplyModalOpen, setIsReplyModalOpen] = useState(false);
@@ -36,13 +36,13 @@ const MessageCard = ({ message }) => {
                 const data = await res.json();
 
                 // State'i güncelle
-                setIsRead(data.read);
+                setIsRead(data.isRead);
 
                 // Sayacı güncelle (Eğer okunduysa sayıyı azalt, okunmadıysa artır)
-                setUnreadCount((prevCount) => (data.read ? prevCount - 1 : prevCount + 1));
+                setUnreadCount((prevCount) => (data.isRead ? prevCount - 1 : prevCount + 1));
 
                 // Mesaj
-                if (data.read) {
+                if (data.isRead) {
                     toast.success("Mesaj okundu olarak işaretlendi");
                 } else {
                     toast.info("Mesaj okunmadı (Yeni) olarak işaretlendi");

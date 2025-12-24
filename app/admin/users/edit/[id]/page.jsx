@@ -37,17 +37,17 @@ export default function UserEdit() {
         }
     }, [userData, setValue]);
 
-    if (formLoading) return <div className="p-8 text-gray-500">Kullanıcı bilgileri yükleniyor...</div>;
+    if (formLoading) return <div className="p-8 text-gray-500">Loading user information...</div>;
 
     return (
         <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mt-10">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Yetki Düzenle</h1>
+                <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Authorization Regulation</h1>
                 <button
                     onClick={() => list("admin/users")}
                     className="text-gray-500 hover:text-gray-700 dark:text-gray-400 text-sm"
                 >
-                    Vazgeç
+                    Leave
                 </button>
             </div>
 
@@ -66,7 +66,7 @@ export default function UserEdit() {
                 {/* ROL SEÇİMİ */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Kullanıcı Rolü
+                        User Role
                     </label>
                     <select
                         {...register("role")}
@@ -77,15 +77,15 @@ export default function UserEdit() {
                         <option value="admin">Admin (Süper Yönetici)</option>
                     </select>
                     <p className="text-xs text-gray-500 mt-1">
-                        * <b>Agent:</b> İlan ekleme ve blog yazma paneline erişebilir.<br />
-                        * <b>Admin:</b> Tüm sistemi yönetir.
+                        * <b>Agent:</b> You can access the ad posting and blog writing panel.<br />
+                        * <b>Admin:</b> Manage the entire system.
                     </p>
                 </div>
 
                 {/* DURUM SEÇİMİ */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Hesap Durumu
+                        Account status
                     </label>
                     <select
                         {...register("status")}
@@ -102,7 +102,7 @@ export default function UserEdit() {
                         type="submit"
                         className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition shadow-md w-full sm:w-auto"
                     >
-                        Kaydet ve Güncelle
+                        Save & Update
                     </button>
                 </div>
 
