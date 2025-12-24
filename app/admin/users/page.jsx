@@ -36,15 +36,15 @@ export default function UserList() {
         fetchUsers();
     }, []);
 
-    if (loading) return <div className="p-8 text-gray-500">Kullanıcılar yükleniyor...</div>;
-    if (error) return <div className="p-8 text-red-500">Hata: {error}</div>;
+    if (loading) return <div className="p-8 text-gray-500">Users loading...</div>;
+    if (error) return <div className="p-8 text-red-500">Error: {error}</div>;
 
     return (
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
             {/* Üst Başlık */}
             <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
-                <h1 className="text-xl font-bold text-gray-800 dark:text-white">Kullanıcı Listesi</h1>
-                <span className="text-sm text-gray-500">Toplam: {users.length} kayıt</span>
+                <h1 className="text-xl font-bold text-gray-800 dark:text-white">User Lists</h1>
+                <span className="text-sm text-gray-500">Toplam: {users.length} enrollment</span>
             </div>
 
             {/* Tablo */}
@@ -52,18 +52,18 @@ export default function UserList() {
                 <table className="w-full text-left text-sm text-gray-600 dark:text-gray-300">
                     <thead className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white font-semibold">
                         <tr>
-                            <th className="p-4">Kullanıcı</th>
+                            <th className="p-4">User</th>
                             <th className="p-4">Email</th>
-                            <th className="p-4">Rol</th>
-                            <th className="p-4">Durum</th>
-                            <th className="p-4 text-right">İşlemler</th>
+                            <th className="p-4">Role</th>
+                            <th className="p-4">Status</th>
+                            <th className="p-4 text-right">Transactions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                         {users.length === 0 ? (
                             <tr>
                                 <td colSpan="5" className="p-8 text-center text-gray-500">
-                                    Hiç kullanıcı bulunamadı.
+                                    No users found.
                                 </td>
                             </tr>
                         ) : (
@@ -82,8 +82,8 @@ export default function UserList() {
                                     <td className="p-4">{user.email}</td>
                                     <td className="p-4">
                                         <span className={`px-2 py-1 rounded text-xs font-semibold uppercase ${user.role === "admin" ? "bg-purple-100 text-purple-700" :
-                                                user.role === "agent" ? "bg-blue-100 text-blue-700" :
-                                                    "bg-gray-100 text-gray-600"
+                                            user.role === "agent" ? "bg-blue-100 text-blue-700" :
+                                                "bg-gray-100 text-gray-600"
                                             }`}>
                                             {user.role}
                                         </span>
@@ -100,7 +100,7 @@ export default function UserList() {
                                             onClick={() => edit("admin/users", user._id)}
                                             className="text-blue-600 hover:text-blue-800 font-medium text-sm"
                                         >
-                                            Düzenle
+                                            Edit
                                         </button>
                                     </td>
                                 </tr>

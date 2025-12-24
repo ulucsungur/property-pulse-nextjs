@@ -35,7 +35,7 @@ export default function AdminCharts({ stats }) {
 
             {/* Pie Chart */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-x-auto">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-6">İlan Kategorileri</h3>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-6">Ads Categories</h3>
 
                 <div className="min-w-[300px] flex justify-center">
                     <PieChart width={400} height={350}>

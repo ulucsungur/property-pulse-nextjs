@@ -8,3 +8,4 @@ export function convertToSerializableObject(leanDocument) {
     // Bu işlem ObjectId'leri stringe, Tarihleri stringe çevirir ve null alanları korur.
     return JSON.parse(JSON.stringify(leanDocument));
 }
+export default convertToSerializableObject;

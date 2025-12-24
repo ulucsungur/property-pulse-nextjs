@@ -45,7 +45,7 @@ export default function AdminWrapper({ children, session }) {
                     `}
                 >
                     <div className="flex items-center justify-between px-6 h-16 border-b border-slate-700 bg-slate-950">
-                        <span className="text-lg font-bold tracking-wider text-blue-400">ADMİN PANELİ</span>
+                        <span className="text-lg font-bold tracking-wider text-blue-400">ADMIN PANEL</span>
                         <button
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="md:hidden text-slate-400 hover:text-white transition"
@@ -58,16 +58,16 @@ export default function AdminWrapper({ children, session }) {
 
                     <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100%-64px)]">
                         <SidebarLink href="/admin" icon="📊" label="Dashboard" onClick={() => setIsMobileMenuOpen(false)} />
-                        <SidebarLink href="/admin/properties" icon="🏠" label="İlanlar" onClick={() => setIsMobileMenuOpen(false)} />
-                        <SidebarLink href="/admin/messages" icon="💬" label="Mesajlar" onClick={() => setIsMobileMenuOpen(false)} />
+                        <SidebarLink href="/admin/properties" icon="🏠" label="Ads" onClick={() => setIsMobileMenuOpen(false)} />
+                        <SidebarLink href="/admin/messages" icon="💬" label="Messages" onClick={() => setIsMobileMenuOpen(false)} />
 
                         {session?.user?.role === "admin" && (
-                            <SidebarLink href="/admin/users" icon="👥" label="Kullanıcılar" onClick={() => setIsMobileMenuOpen(false)} />
+                            <SidebarLink href="/admin/users" icon="👥" label="Users" onClick={() => setIsMobileMenuOpen(false)} />
                         )}
 
                         <div className="pt-4 mt-4 border-t border-slate-800">
                             <Link href="/" className="flex items-center space-x-3 px-4 py-3 rounded text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                                <span>⬅️</span> <span>Siteye Dön</span>
+                                <span>⬅️</span> <span>Back to Site</span>
                             </Link>
                         </div>
                     </nav>
