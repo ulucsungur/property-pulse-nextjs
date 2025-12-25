@@ -2,8 +2,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PROPERTY_TYPES } from "@/config/propertyTypes"; // 1. Import et
+import { useTranslations } from 'next-intl';
 
 const PropertySearchForm = () => {
+    const t = useTranslations('SearchForm');
     const [location, setLocation] = useState("");
     const [propertyType, setPropertyType] = useState("All");
     const router = useRouter();
@@ -28,7 +30,7 @@ const PropertySearchForm = () => {
                 <input
                     type="text"
                     id="location"
-                    placeholder="Enter Location (City, State, Zip, etc)"
+                    placeholder={t('placeholder')}
                     className="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring focus:ring-blue-500 border dark:border-gray-600"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
@@ -43,7 +45,7 @@ const PropertySearchForm = () => {
                     onChange={(e) => setPropertyType(e.target.value)}
                 >
                     {/* Varsayılan seçenek */}
-                    <option value="All">All</option>
+                    <option value="All">{t('typeLabel')}</option>
 
                     {/* Merkezi listeden seçenekleri oluştur */}
                     {PROPERTY_TYPES.map((type) => (
@@ -57,7 +59,7 @@ const PropertySearchForm = () => {
                 type="submit"
                 className="md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3 rounded-lg bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-500"
             >
-                Search
+                {t('action')}
             </button>
         </form >
     );

@@ -1,14 +1,15 @@
 import KeySpinner from '@/components/KeySpinner';
+import { getTranslations, getLocale } from 'next-intl/server';
 
-const LoadingPage = () => {
+const LoadingPage = async ({ params }) => {
+    const locale = await getLocale();
+    const t = await getTranslations({ locale, namespace: 'loadingPage' });
     return (
         <div className='flex flex-col items-center justify-center h-screen w-full bg-gray-50 dark:bg-gray-900 z-50'>
             {/* 3D Anahtar Animasyonu */}
             <KeySpinner />
-
-            {/* Opsiyonel: Altına küçük bir yazı */}
             <p className='mt-4 text-gray-500 dark:text-gray-400 text-lg animate-pulse'>
-                Yükleniyor...
+                {t('loading')};
             </p>
         </div>
     );

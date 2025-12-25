@@ -3,13 +3,14 @@ import { useState } from 'react';
 import PropertySearchForm from "./PropertySearchForm";
 import SemanticSearchBox from "./SemanticSearchBox";
 import { FaSearch, FaMagic } from 'react-icons/fa';
-
-// 1. IMPORTLARI EKLE
 import { motion } from 'framer-motion';
 import { fadeIn } from '@/utils/motion';
+import { useTranslations } from 'next-intl';
 
 const Hero = () => {
     const [searchType, setSearchType] = useState('classic');
+
+    const t = useTranslations('HomePage');
 
     return (
         <section className="bg-blue-700 dark:bg-gray-800 py-12 mb-4 min-h-[400px] flex flex-col justify-center pt-28 pb-20">
@@ -23,10 +24,10 @@ const Hero = () => {
                     className="text-center mb-6"
                 >
                     <h1 className="text-3xl font-extrabold text-white sm:text-4xl md:text-5xl">
-                        Find The Perfect Rental
+                        {t('title')}
                     </h1>
                     <p className="my-3 text-lg text-white">
-                        Discover the perfect property that suits your needs.
+                        {t('subtitle')}
                     </p>
                 </motion.div>
 
@@ -46,7 +47,7 @@ const Hero = () => {
                                 : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                                 }`}
                         >
-                            <FaSearch /> Search by Location
+                            <FaSearch /> {t('tabClassic')}
                         </button>
                         <button
                             onClick={() => setSearchType('ai')}
@@ -55,7 +56,7 @@ const Hero = () => {
                                 : 'text-gray-500 hover:text-gray-700'
                                 }`}
                         >
-                            <FaMagic className="text-purple-500" /> Search with AI
+                            <FaMagic className="text-purple-500" /> {t('tabAI')}
                         </button>
                     </div>
 

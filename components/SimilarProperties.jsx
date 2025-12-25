@@ -2,8 +2,10 @@
 import { useState, useEffect } from "react";
 import PropertyCard from "./PropertyCard";
 import { FaSpinner } from "react-icons/fa";
+import { useTranslations } from 'next-intl';
 
 const SimilarProperties = ({ propertyId }) => {
+    const t = useTranslations('similarProperties');
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -48,7 +50,7 @@ const SimilarProperties = ({ propertyId }) => {
     return (
         <div className="bg-blue-50 dark:bg-gray-900 px-6 py-10 rounded-xl shadow-sm mt-10">
             <h3 className="text-2xl font-bold text-blue-800 dark:text-white mb-6 text-center md:text-left">
-                You might also like these
+                {t('YouMightLikeThese')}
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

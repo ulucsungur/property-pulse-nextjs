@@ -4,15 +4,19 @@ import '@/models/Property';
 import { convertToSerializableObject } from '@/utils/convertToObject';
 import { getUserSession } from '@/utils/getUserSession';
 import MessageCard from '@/components/MessageCard';
+// 1. IMPORT: Çeviri fonksiyonu
+import { getTranslations } from 'next-intl/server';
 
-// Sayfa her açıldığında/yenilendiğinde veritabanından taze veri çekmesini sağlar.
 export const dynamic = 'force-dynamic';
 
-const MessagesPage = async () => {
-    // 1. Veritabanı Bağlantısı
-    await connectToDB();
+// Next.js 15: params bir Promise'dir, async alınır.
+const MessagesPage = async ({ params }) => {
+    // 2. DİL VE ÇEVİRİ
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: 'Messages' });
 
-    // 2. Kullanıcı Oturumu
+    // 3. VERİTABANI VE OTURUM
+    await connectToDB();
     const sessionUser = await getUserSession();
     const { userId } = sessionUser || {};
 
@@ -22,16 +26,19 @@ const MessagesPage = async () => {
             <section className="bg-blue-50 dark:bg-gray-900 min-h-screen">
                 <div className="container m-auto py-24 max-w-6xl">
                     <div className="bg-white dark:bg-gray-800 px-6 py-8 mb-4 shadow-md rounded-md border border-gray-200 dark:border-gray-700 m-4 md:m-0">
-                        <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">Your Messages</h1>
-                        <p className="text-gray-600 dark:text-gray-300">You must be logged in to view messages.</p>
+                        <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">
+                            {t('title')}
+                        </h1>
+                        <p className="text-gray-600 dark:text-gray-300">
+                            {t('loginRequired')}
+                        </p>
                     </div>
                 </div>
             </section>
         );
     }
 
-    // -- MESAJLARI ÇEK (Tek Sorgu) --
-    // lean() kullanmak performansı artırır ve gereksiz Mongoose verilerini temizler
+    // -- MESAJLARI ÇEK --
     const readMessages = await Message.find({ recipient: userId })
         .sort({ createdAt: -1 })
         .populate('sender', 'username')
@@ -39,36 +46,34 @@ const MessagesPage = async () => {
         .lean();
 
     // -- VERİYİ DÜZENLE --
-    // Mongoose nesnelerini React'in anlayacağı düz JSON objesine çeviriyoruz.
-    // Bu işlem "Buton çalışmıyor" sorununu çözer çünkü React'e temiz veri gider.
     const messages = readMessages.map((msg) => {
         const serialized = convertToSerializableObject(msg);
-        // Ek güvenlik: ID'lerin string olduğundan emin olalım
         serialized._id = serialized._id.toString();
         serialized.sender = serialized.sender ? convertToSerializableObject(serialized.sender) : null;
         serialized.property = serialized.property ? convertToSerializableObject(serialized.property) : null;
         return serialized;
     });
 
-    // Sıralama: Okunmamışlar (read: false) en üstte
+    // Sıralama: Okunmamışlar (isRead: false) en üstte
     messages.sort((a, b) => {
         if (a.isRead === b.isRead) return 0;
-        return a.isRead ? 1 : -1; // Okunmuşlar (true) alta, okunmamışlar (false) üste
+        return a.isRead ? 1 : -1;
     });
 
     return (
-        // -- DARK MODE VE ARKAPLAN DÜZELTMESİ --
-        // dark:bg-gray-900 sınıfı tüm sayfa arka planını koyu yapar
         <section className="bg-blue-50 dark:bg-gray-900 min-h-screen">
             <div className="container m-auto py-24 max-w-6xl">
 
-                {/* İç Kutu: dark:bg-gray-800 (Koyu Gri) */}
                 <div className="bg-white dark:bg-gray-800 px-6 py-8 mb-4 shadow-md rounded-md border border-gray-200 dark:border-gray-700 m-4 md:m-0">
-                    <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">Your Messages</h1>
+                    <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">
+                        {t('title')}
+                    </h1>
 
                     <div className="space-y-4">
                         {messages.length === 0 ? (
-                            <p className="text-gray-600 dark:text-gray-300">You have no messages</p>
+                            <p className="text-gray-600 dark:text-gray-300">
+                                {t('noMessages')}
+                            </p>
                         ) : (
                             messages.map((message) => (
                                 <MessageCard key={message._id} message={message} />
@@ -82,6 +87,94 @@ const MessagesPage = async () => {
 };
 
 export default MessagesPage;
+
+
+
+//251225 çalışan versiyon
+// import connectToDB from '@/config/database';
+// import Message from '@/models/Message';
+// import '@/models/Property';
+// import { convertToSerializableObject } from '@/utils/convertToObject';
+// import { getUserSession } from '@/utils/getUserSession';
+// import MessageCard from '@/components/MessageCard';
+
+// // Sayfa her açıldığında/yenilendiğinde veritabanından taze veri çekmesini sağlar.
+// export const dynamic = 'force-dynamic';
+
+// const MessagesPage = async () => {
+//     // 1. Veritabanı Bağlantısı
+//     await connectToDB();
+
+//     // 2. Kullanıcı Oturumu
+//     const sessionUser = await getUserSession();
+//     const { userId } = sessionUser || {};
+
+//     // -- GİRİŞ YAPILMAMIŞSA --
+//     if (!userId) {
+//         return (
+//             <section className="bg-blue-50 dark:bg-gray-900 min-h-screen">
+//                 <div className="container m-auto py-24 max-w-6xl">
+//                     <div className="bg-white dark:bg-gray-800 px-6 py-8 mb-4 shadow-md rounded-md border border-gray-200 dark:border-gray-700 m-4 md:m-0">
+//                         <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">Your Messages</h1>
+//                         <p className="text-gray-600 dark:text-gray-300">You must be logged in to view messages.</p>
+//                     </div>
+//                 </div>
+//             </section>
+//         );
+//     }
+
+//     // -- MESAJLARI ÇEK (Tek Sorgu) --
+//     // lean() kullanmak performansı artırır ve gereksiz Mongoose verilerini temizler
+//     const readMessages = await Message.find({ recipient: userId })
+//         .sort({ createdAt: -1 })
+//         .populate('sender', 'username')
+//         .populate('property', 'name')
+//         .lean();
+
+//     // -- VERİYİ DÜZENLE --
+//     // Mongoose nesnelerini React'in anlayacağı düz JSON objesine çeviriyoruz.
+//     // Bu işlem "Buton çalışmıyor" sorununu çözer çünkü React'e temiz veri gider.
+//     const messages = readMessages.map((msg) => {
+//         const serialized = convertToSerializableObject(msg);
+//         // Ek güvenlik: ID'lerin string olduğundan emin olalım
+//         serialized._id = serialized._id.toString();
+//         serialized.sender = serialized.sender ? convertToSerializableObject(serialized.sender) : null;
+//         serialized.property = serialized.property ? convertToSerializableObject(serialized.property) : null;
+//         return serialized;
+//     });
+
+//     // Sıralama: Okunmamışlar (read: false) en üstte
+//     messages.sort((a, b) => {
+//         if (a.isRead === b.isRead) return 0;
+//         return a.isRead ? 1 : -1; // Okunmuşlar (true) alta, okunmamışlar (false) üste
+//     });
+
+//     return (
+//         // -- DARK MODE VE ARKAPLAN DÜZELTMESİ --
+//         // dark:bg-gray-900 sınıfı tüm sayfa arka planını koyu yapar
+//         <section className="bg-blue-50 dark:bg-gray-900 min-h-screen">
+//             <div className="container m-auto py-24 max-w-6xl">
+
+//                 {/* İç Kutu: dark:bg-gray-800 (Koyu Gri) */}
+//                 <div className="bg-white dark:bg-gray-800 px-6 py-8 mb-4 shadow-md rounded-md border border-gray-200 dark:border-gray-700 m-4 md:m-0">
+//                     <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">Your Messages</h1>
+
+//                     <div className="space-y-4">
+//                         {messages.length === 0 ? (
+//                             <p className="text-gray-600 dark:text-gray-300">You have no messages</p>
+//                         ) : (
+//                             messages.map((message) => (
+//                                 <MessageCard key={message._id} message={message} />
+//                             ))
+//                         )}
+//                     </div>
+//                 </div>
+//             </div>
+//         </section>
+//     );
+// };
+
+//export default MessagesPage;
 
 // import connectToDatabase from "@/config/database";
 // import Message from "@/models/Message";

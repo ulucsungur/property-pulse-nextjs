@@ -1,3 +1,7 @@
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin('./i18n/request.js');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: "standalone",
@@ -23,10 +27,15 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'res.cloudinary.com',
                 pathname: '**',
-            }
+            },
+            {
+                protocol: 'https',
+                hostname: 'maps.googleapis.com',
+            },
         ],
     },
     serverExternalPackages: ['mongoose'],
 };
 
-export default nextConfig;
+// Config'i next-intl ile sarmalıyoruz
+export default withNextIntl(nextConfig);

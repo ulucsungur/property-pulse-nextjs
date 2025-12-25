@@ -1,15 +1,21 @@
 'use client';
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+//import Link from "next/link";
+import { useTranslations } from 'next-intl'; // Çeviri kancası
+import { Link, usePathname } from '@/utils/navigation'; // next/link yerine bizim navi
 import Logo from "./Logo";
 import profileDefault from "@/assets/images/profile.png";
 import { signOut, useSession } from "next-auth/react";
 import UnreadMessageCount from "./UnreadMessageCount";
 import ThemeSwitcher from "./ThemeSwitcher";
 
+import LangSwitcher from './LangSwitcher'; // Yeni bileşenimiz
+
 const Navbar = () => {
+
+    const t = useTranslations('Navigation'); // JSON dosyasındaki "Navigation" başlığını oku
+
     const { data: session } = useSession();
 
     // --- YENİ: Admin veya Agent mi kontrolü ---
@@ -69,24 +75,24 @@ const Navbar = () => {
                             <div className="group-hover:scale-110 transition duration-300">
                                 <Logo />
                             </div>
-                            <span className="hidden md:block text-white text-2xl font-bold ml-2 tracking-tight">PropertyPulse</span>
+                            <span className="hidden md:block text-white text-2xl font-bold ml-2 tracking-tight">{t('propertyPulse')}</span>
                         </Link>
 
                         <div className="hidden md:ml-6 md:block">
                             <div className="flex space-x-2">
-                                <Link href="/" className={`${pathname === '/' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>Home</Link>
-                                <Link href="/properties" className={`${pathname === '/properties' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>Properties</Link>
+                                <Link href="/" className={`${pathname === '/' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>{t('home')}</Link>
+                                <Link href="/properties" className={`${pathname === '/properties' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>{t('properties')}</Link>
                                 <Link
                                     href='/blog'
                                     className={`${pathname === '/blog' ? 'bg-black' : ''
                                         } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                                 >
-                                    Blog
+                                    {t('blog')}
                                 </Link>
                                 {isAdminOrAgent && (
                                     <>
-                                        <Link href="/chart" className={`${pathname === '/chart' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>Charts</Link>
-                                        <Link href="/properties/add" className={`${pathname === '/properties/add' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>Add Property</Link>
+                                        <Link href="/chart" className={`${pathname === '/chart' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>{t('charts')}</Link>
+                                        <Link href="/properties/add" className={`${pathname === '/properties/add' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>{t('addProperty')}</Link>
                                     </>
                                 )}
                             </div>
@@ -98,20 +104,21 @@ const Navbar = () => {
 
                         {/* 1. DARK MODE BUTONU */}
                         <ThemeSwitcher />
+                        <LangSwitcher />
 
                         {/* 2. AUTH KISMI */}
                         {!session ? (
                             <div className="hidden md:block">
                                 <div className="flex items-center gap-2">
-                                    <Link href="/login" className="text-white hover:bg-white/10 rounded-md px-4 py-2 transition">Login</Link>
-                                    <Link href="/register" className="text-white hover:bg-white/10 rounded-md px-4 py-2 transition">Register</Link>
+                                    <Link href="/login" className="text-white hover:bg-white/10 rounded-md px-4 py-2 transition">{t('login')}</Link>
+                                    <Link href="/register" className="text-white hover:bg-white/10 rounded-md px-4 py-2 transition">{t('register')}</Link>
                                 </div>
                             </div>
                         ) : (
                             <>
                                 <Link href="/messages" className="relative group">
                                     <button type="button" className="relative rounded-full bg-gray-800/50 p-1.5 text-gray-200 hover:text-white hover:bg-gray-700 transition focus:outline-none">
-                                        <span className="sr-only">View notifications</span>
+                                        <span className="sr-only">{t('viewNotifications')}</span>
                                         <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                                         </svg>
@@ -141,13 +148,13 @@ const Navbar = () => {
                                                     className="block px-4 py-2 text-sm text-blue-600 font-bold hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-gray-700 border-b dark:border-gray-700"
                                                     onClick={() => setIsProfileMenuOpen(false)}
                                                 >
-                                                    🚀 Admin Panel
+                                                    🚀 {t('adminPanel')}
                                                 </Link>
                                             )}
                                             {/* --------------------------------------------------- */}
 
-                                            <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700" onClick={() => setIsProfileMenuOpen(false)}>Your Profile</Link>
-                                            <Link href="/properties/saved" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700" onClick={() => setIsProfileMenuOpen(false)}>Saved Properties</Link>
+                                            <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700" onClick={() => setIsProfileMenuOpen(false)}>{t('yourProfile')}</Link>
+                                            <Link href="/properties/saved" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700" onClick={() => setIsProfileMenuOpen(false)}>{t('savedProperties')}</Link>
                                             {isAdminOrAgent && (
                                                 <Link
                                                     href='/blog/create'
@@ -155,7 +162,7 @@ const Navbar = () => {
                                                     role='menuitem'
                                                     onClick={() => setIsProfileMenuOpen(false)}
                                                 >
-                                                    Add Text
+                                                    {t('addBlog')}
                                                 </Link>
                                             )}
                                             <button
@@ -165,7 +172,7 @@ const Navbar = () => {
                                                     signOut({ callbackUrl: '/' });
                                                 }}
                                             >
-                                                Sign Out
+                                                {t('logout')}
                                             </button>
                                         </div>
                                     )}
