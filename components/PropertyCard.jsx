@@ -1,24 +1,35 @@
 'use client';
 import Image from "next/image";
-// 1. DÜZELTME: Link'i kendi navigation dosyamızdan çekiyoruz
 import { Link } from "@/utils/navigation";
 import { FaBed, FaBath, FaRulerCombined, FaMoneyBill, FaMapMarker } from "react-icons/fa";
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl'; // 2. IMPORT: Çeviri kancası
+import { useCurrency } from '@/context/CurrencyContext';
 
 const PropertyCard = ({ property }) => {
-    // 3. KANCAYI BAŞLAT
     const t = useTranslations('PropertyCard');
+    const { formatPrice } = useCurrency();
 
-    const getRateDisplay = () => {
-        const { rates } = property;
-        if (rates.monthly) {
-            return `$${rates.monthly.toLocaleString()}/${t('mo')}`;
-        } else if (rates.weekly) {
-            return `$${rates.weekly.toLocaleString()}/${t('wk')}`;
-        } else if (rates.nightly) {
-            return `$${rates.nightly.toLocaleString()}/${t('night')}`;
+    // const getRateDisplay = () => {
+    //     const { rates } = property;
+    //     if (rates.monthly) {
+    //         return `$${rates.monthly.toLocaleString()}/${t('mo')}`;
+    //     } else if (rates.weekly) {
+    //         return `$${rates.weekly.toLocaleString()}/${t('wk')}`;
+    //     } else if (rates.nightly) {
+    //         return `$${rates.nightly.toLocaleString()}/${t('night')}`;
+    //     }
+    // };
+    const getDisplayPrice = () => {
+        if (property.rates.monthly) {
+            // 3. FORMATLAMA KULLAN
+            return `${formatPrice(property.rates.monthly)} /mo`;
+        } else if (property.rates.weekly) {
+            return `${formatPrice(property.rates.weekly)} /wk`;
+        } else if (property.rates.nightly) {
+            return `${formatPrice(property.rates.nightly)} /night`;
         }
+        return '';
     };
 
     const itemVariants = {
@@ -62,7 +73,8 @@ const PropertyCard = ({ property }) => {
 
                 {/* Fiyat Etiketi */}
                 <h3 className="absolute top-[10px] right-[10px] bg-white dark:bg-gray-900 px-4 py-2 rounded-lg text-blue-600 dark:text-blue-400 font-bold text-right md:text-center lg:text-right shadow-sm text-sm">
-                    {getRateDisplay()}
+                    {/* {getRateDisplay()} */}
+                    {getDisplayPrice()}
                 </h3>
 
                 {/* Özellikler (Yatak, Banyo, m2) */}

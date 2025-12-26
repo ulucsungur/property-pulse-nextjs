@@ -3,15 +3,12 @@
 import React, { useEffect } from "react";
 import { useNavigation } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
+import { useParams } from "next/navigation";
 
 export default function UserEdit() {
     const { list } = useNavigation();
+    const params = useParams();
 
-    // REFINE GÜCÜ BURADA:
-    // 1. URL'deki ID'yi alır.
-    // 2. API'ye (api/admin/users/ID) istek atar.
-    // 3. Formu doldurur.
-    // 4. Kaydet deyince PUT isteği atar.
     const {
         refineCore: { onFinish, formLoading, queryResult },
         register,
@@ -22,6 +19,7 @@ export default function UserEdit() {
         refineCoreProps: {
             resource: "admin/users", // API yolunu bulması için kritik ayar
             action: "edit",
+            id: params?.id,
             redirect: "list" // Kayıttan sonra listeye dön
         },
     });

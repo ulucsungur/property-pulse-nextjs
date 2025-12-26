@@ -2,25 +2,23 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 //import Link from "next/link";
-import { useTranslations } from 'next-intl'; // Çeviri kancası
-import { Link, usePathname } from '@/utils/navigation'; // next/link yerine bizim navi
+import { useTranslations } from 'next-intl';
+import { Link, usePathname } from '@/utils/navigation';
 import Logo from "./Logo";
 import profileDefault from "@/assets/images/profile.png";
 import { signOut, useSession } from "next-auth/react";
 import UnreadMessageCount from "./UnreadMessageCount";
 import ThemeSwitcher from "./ThemeSwitcher";
-
-import LangSwitcher from './LangSwitcher'; // Yeni bileşenimiz
+import LangSwitcher from './LangSwitcher';
+import CurrencySelect from './CurrencySelect'; // ✅ YENİ EKLENDİ
 
 const Navbar = () => {
 
-    const t = useTranslations('Navigation'); // JSON dosyasındaki "Navigation" başlığını oku
-
+    const t = useTranslations('Navigation');
     const { data: session } = useSession();
 
-    // --- YENİ: Admin veya Agent mi kontrolü ---
+    // --- Admin veya Agent mi kontrolü ---
     const isAdminOrAgent = session?.user?.role === 'admin' || session?.user?.role === 'agent';
-    // ------------------------------------------
 
     const profileImage = (session?.user?.image && session.user.image.startsWith('http'))
         ? session.user.image
@@ -102,9 +100,12 @@ const Navbar = () => {
                     {/* --- SAĞ TARAF --- */}
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0 gap-3">
 
-                        {/* 1. DARK MODE BUTONU */}
-                        <ThemeSwitcher />
-                        <LangSwitcher />
+                        {/* ✅ DÜZELTME: Bu butonlar Mobilde GİZLENDİ (hidden md:flex), üst üste binmeyi engellemek için */}
+                        <div className="hidden md:flex items-center gap-2">
+                            <CurrencySelect /> {/* Masaüstü Currency */}
+                            <ThemeSwitcher />
+                            <LangSwitcher />
+                        </div>
 
                         {/* 2. AUTH KISMI */}
                         {!session ? (
@@ -141,7 +142,6 @@ const Navbar = () => {
                                     {isProfileMenuOpen && (
                                         <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 border dark:border-gray-700 animate-fade-in-down">
 
-                                            {/* --- YENİ: Yönetim Paneli Linki (Sadece Yetkililere) --- */}
                                             {isAdminOrAgent && (
                                                 <Link
                                                     href="/admin"
@@ -151,7 +151,6 @@ const Navbar = () => {
                                                     🚀 {t('adminPanel')}
                                                 </Link>
                                             )}
-                                            {/* --------------------------------------------------- */}
 
                                             <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700" onClick={() => setIsProfileMenuOpen(false)}>{t('yourProfile')}</Link>
                                             <Link href="/properties/saved" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700" onClick={() => setIsProfileMenuOpen(false)}>{t('savedProperties')}</Link>
@@ -187,7 +186,6 @@ const Navbar = () => {
             {isMobileMenuOpen && (
                 <div id="mobile-menu" className="bg-blue-800 dark:bg-gray-900 shadow-inner">
                     <div className="space-y-1 px-2 pb-3 pt-2">
-                        {/* --- YENİ: Mobil İçin Yönetim Linki --- */}
                         {isAdminOrAgent && (
                             <Link href="/admin"
                                 className="text-yellow-300 block rounded-md px-3 py-2 text-base font-bold hover:bg-black/20"
@@ -197,42 +195,62 @@ const Navbar = () => {
                         <Link href="/"
                             className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
                             onClick={() => setIsMobileMenuOpen(false)}
-                        >Home</Link>
+                        >{t('home')}</Link>
 
                         <Link href="/properties" className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
                             onClick={() => setIsMobileMenuOpen(false)}
-                        >Properties</Link>
+                        >{t('properties')}</Link>
                         <Link
                             href='/blog'
                             className={`${pathname === '/blog' ? 'bg-gray-900' : ''
                                 } text-white block rounded-md px-3 py-2 text-base font-medium`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            Blog
+                            {t('blog')}
                         </Link>
                         {isAdminOrAgent && (
                             <>
                                 <Link href="/chart"
                                     className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                >Charts</Link>
+                                >{t('charts')}</Link>
                                 <Link href="/properties/add"
                                     className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                >Add Property</Link>
+                                >{t('addProperty')}</Link>
                             </>
                         )}
+
+                        {/* ✅ YENİ: Mobilde Üstten Kaldırdığımız Ayarlar Buraya Geldi */}
+                        <div className="border-t border-white/10 pt-4 mt-4 px-3 space-y-3">
+                            <p className="text-xs text-blue-200 uppercase font-bold">Settings</p>
+                            <div className="flex flex-col gap-3">
+                                <div className="flex justify-between items-center text-white text-sm">
+                                    <span>Currency</span>
+                                    <CurrencySelect />
+                                </div>
+                                <div className="flex justify-between items-center text-white text-sm">
+                                    <span>Language</span>
+                                    <LangSwitcher />
+                                </div>
+                                <div className="flex justify-between items-center text-white text-sm">
+                                    <span>Theme</span>
+                                    <ThemeSwitcher />
+                                </div>
+                            </div>
+                        </div>
+                        {/* ----------------------------------------------------------- */}
 
                         {!session && (
                             <div className="border-t border-white/10 pt-4 mt-4 space-y-2">
                                 <Link href="/login"
                                     className="block text-white bg-gray-900/50 rounded-md px-3 py-2 text-base font-medium text-center hover:bg-gray-900"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                >Login</Link>
+                                >{t('login')}</Link>
                                 <Link href="/register"
                                     className="block text-blue-900 bg-white rounded-md px-3 py-2 text-base font-medium text-center"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                >Register</Link>
+                                >{t('register')}</Link>
                             </div>
                         )}
                     </div>
@@ -243,6 +261,253 @@ const Navbar = () => {
 }
 
 export default Navbar;
+
+//---261225 çalışan navbar
+// 'use client';
+// import { useState, useEffect } from "react";
+// import Image from "next/image";
+// //import Link from "next/link";
+// import { useTranslations } from 'next-intl'; // Çeviri kancası
+// import { Link, usePathname } from '@/utils/navigation'; // next/link yerine bizim navi
+// import Logo from "./Logo";
+// import profileDefault from "@/assets/images/profile.png";
+// import { signOut, useSession } from "next-auth/react";
+// import UnreadMessageCount from "./UnreadMessageCount";
+// import ThemeSwitcher from "./ThemeSwitcher";
+
+// import LangSwitcher from './LangSwitcher'; // Yeni bileşenimiz
+
+// const Navbar = () => {
+
+//     const t = useTranslations('Navigation'); // JSON dosyasındaki "Navigation" başlığını oku
+
+//     const { data: session } = useSession();
+
+//     // --- YENİ: Admin veya Agent mi kontrolü ---
+//     const isAdminOrAgent = session?.user?.role === 'admin' || session?.user?.role === 'agent';
+//     // ------------------------------------------
+
+//     const profileImage = (session?.user?.image && session.user.image.startsWith('http'))
+//         ? session.user.image
+//         : profileDefault;
+
+//     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+//     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
+//     // Scroll Takibi State'i
+//     const [isScrolled, setIsScrolled] = useState(false);
+
+//     useEffect(() => {
+//         const handleScroll = () => {
+//             if (window.scrollY > 10) {
+//                 setIsScrolled(true);
+//             } else {
+//                 setIsScrolled(false);
+//             }
+//         };
+
+//         window.addEventListener("scroll", handleScroll);
+//         return () => window.removeEventListener("scroll", handleScroll);
+//     }, []);
+
+//     const pathname = usePathname();
+
+//     return (
+//         <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b ${isScrolled || pathname !== '/'
+//             ? "bg-blue-900 dark:bg-gray-900 shadow-lg py-2 border-blue-800 dark:border-gray-800"
+//             : "bg-blue-900/80 dark:bg-gray-900/80 backdrop-blur-md py-4 border-transparent"
+//             }`}>
+//             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+//                 <div className="relative flex h-16 items-center justify-between">
+
+//                     {/* --- HAMBURGER MENU (MOBİL) --- */}
+//                     <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
+//                         <button
+//                             type="button"
+//                             className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-200 hover:bg-white/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition"
+//                             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+//                         >
+//                             <span className="sr-only">Open main menu</span>
+//                             <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+//                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+//                             </svg>
+//                         </button>
+//                     </div>
+
+//                     {/* --- LOGO VE MENÜLER --- */}
+//                     <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
+//                         <Link className="flex flex-shrink-0 items-center gap-2 group" href="/">
+//                             <div className="group-hover:scale-110 transition duration-300">
+//                                 <Logo />
+//                             </div>
+//                             <span className="hidden md:block text-white text-2xl font-bold ml-2 tracking-tight">{t('propertyPulse')}</span>
+//                         </Link>
+
+//                         <div className="hidden md:ml-6 md:block">
+//                             <div className="flex space-x-2">
+//                                 <Link href="/" className={`${pathname === '/' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>{t('home')}</Link>
+//                                 <Link href="/properties" className={`${pathname === '/properties' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>{t('properties')}</Link>
+//                                 <Link
+//                                     href='/blog'
+//                                     className={`${pathname === '/blog' ? 'bg-black' : ''
+//                                         } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+//                                 >
+//                                     {t('blog')}
+//                                 </Link>
+//                                 {isAdminOrAgent && (
+//                                     <>
+//                                         <Link href="/chart" className={`${pathname === '/chart' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>{t('charts')}</Link>
+//                                         <Link href="/properties/add" className={`${pathname === '/properties/add' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>{t('addProperty')}</Link>
+//                                     </>
+//                                 )}
+//                             </div>
+//                         </div>
+//                     </div>
+
+//                     {/* --- SAĞ TARAF --- */}
+//                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0 gap-3">
+
+//                         {/* 1. DARK MODE BUTONU */}
+//                         <ThemeSwitcher />
+//                         <LangSwitcher />
+
+//                         {/* 2. AUTH KISMI */}
+//                         {!session ? (
+//                             <div className="hidden md:block">
+//                                 <div className="flex items-center gap-2">
+//                                     <Link href="/login" className="text-white hover:bg-white/10 rounded-md px-4 py-2 transition">{t('login')}</Link>
+//                                     <Link href="/register" className="text-white hover:bg-white/10 rounded-md px-4 py-2 transition">{t('register')}</Link>
+//                                 </div>
+//                             </div>
+//                         ) : (
+//                             <>
+//                                 <Link href="/messages" className="relative group">
+//                                     <button type="button" className="relative rounded-full bg-gray-800/50 p-1.5 text-gray-200 hover:text-white hover:bg-gray-700 transition focus:outline-none">
+//                                         <span className="sr-only">{t('viewNotifications')}</span>
+//                                         <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+//                                             <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+//                                         </svg>
+//                                     </button>
+//                                     <UnreadMessageCount />
+//                                 </Link>
+
+//                                 {/* Profil Dropdown */}
+//                                 <div className="relative ml-2">
+//                                     <div>
+//                                         <button
+//                                             type="button"
+//                                             className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 transition transform hover:scale-105"
+//                                             onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+//                                         >
+//                                             <span className="sr-only">Open user menu</span>
+//                                             <Image className="h-9 w-9 rounded-full object-cover border-2 border-white/20" src={profileImage} width={40} height={40} alt="User" />
+//                                         </button>
+//                                     </div>
+//                                     {isProfileMenuOpen && (
+//                                         <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 border dark:border-gray-700 animate-fade-in-down">
+
+//                                             {/* --- YENİ: Yönetim Paneli Linki (Sadece Yetkililere) --- */}
+//                                             {isAdminOrAgent && (
+//                                                 <Link
+//                                                     href="/admin"
+//                                                     className="block px-4 py-2 text-sm text-blue-600 font-bold hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-gray-700 border-b dark:border-gray-700"
+//                                                     onClick={() => setIsProfileMenuOpen(false)}
+//                                                 >
+//                                                     🚀 {t('adminPanel')}
+//                                                 </Link>
+//                                             )}
+//                                             {/* --------------------------------------------------- */}
+
+//                                             <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700" onClick={() => setIsProfileMenuOpen(false)}>{t('yourProfile')}</Link>
+//                                             <Link href="/properties/saved" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700" onClick={() => setIsProfileMenuOpen(false)}>{t('savedProperties')}</Link>
+//                                             {isAdminOrAgent && (
+//                                                 <Link
+//                                                     href='/blog/create'
+//                                                     className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700'
+//                                                     role='menuitem'
+//                                                     onClick={() => setIsProfileMenuOpen(false)}
+//                                                 >
+//                                                     {t('addBlog')}
+//                                                 </Link>
+//                                             )}
+//                                             <button
+//                                                 className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 w-full text-left dark:text-red-400 dark:hover:bg-gray-700"
+//                                                 onClick={() => {
+//                                                     setIsProfileMenuOpen(false);
+//                                                     signOut({ callbackUrl: '/' });
+//                                                 }}
+//                                             >
+//                                                 {t('logout')}
+//                                             </button>
+//                                         </div>
+//                                     )}
+//                                 </div>
+//                             </>
+//                         )}
+//                     </div>
+//                 </div>
+//             </div>
+
+//             {/* --- MOBİL MENÜ --- */}
+//             {isMobileMenuOpen && (
+//                 <div id="mobile-menu" className="bg-blue-800 dark:bg-gray-900 shadow-inner">
+//                     <div className="space-y-1 px-2 pb-3 pt-2">
+//                         {/* --- YENİ: Mobil İçin Yönetim Linki --- */}
+//                         {isAdminOrAgent && (
+//                             <Link href="/admin"
+//                                 className="text-yellow-300 block rounded-md px-3 py-2 text-base font-bold hover:bg-black/20"
+//                                 onClick={() => setIsMobileMenuOpen(false)}
+//                             >🚀 Admin Panel</Link>
+//                         )}
+//                         <Link href="/"
+//                             className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
+//                             onClick={() => setIsMobileMenuOpen(false)}
+//                         >Home</Link>
+
+//                         <Link href="/properties" className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
+//                             onClick={() => setIsMobileMenuOpen(false)}
+//                         >Properties</Link>
+//                         <Link
+//                             href='/blog'
+//                             className={`${pathname === '/blog' ? 'bg-gray-900' : ''
+//                                 } text-white block rounded-md px-3 py-2 text-base font-medium`}
+//                             onClick={() => setIsMobileMenuOpen(false)}
+//                         >
+//                             Blog
+//                         </Link>
+//                         {isAdminOrAgent && (
+//                             <>
+//                                 <Link href="/chart"
+//                                     className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
+//                                     onClick={() => setIsMobileMenuOpen(false)}
+//                                 >Charts</Link>
+//                                 <Link href="/properties/add"
+//                                     className="text-white block rounded-md px-3 py-2 text-base font-medium hover:bg-black/20"
+//                                     onClick={() => setIsMobileMenuOpen(false)}
+//                                 >Add Property</Link>
+//                             </>
+//                         )}
+
+//                         {!session && (
+//                             <div className="border-t border-white/10 pt-4 mt-4 space-y-2">
+//                                 <Link href="/login"
+//                                     className="block text-white bg-gray-900/50 rounded-md px-3 py-2 text-base font-medium text-center hover:bg-gray-900"
+//                                     onClick={() => setIsMobileMenuOpen(false)}
+//                                 >Login</Link>
+//                                 <Link href="/register"
+//                                     className="block text-blue-900 bg-white rounded-md px-3 py-2 text-base font-medium text-center"
+//                                     onClick={() => setIsMobileMenuOpen(false)}
+//                                 >Register</Link>
+//                             </div>
+//                         )}
+//                     </div>
+//                 </div>
+//             )}
+//         </nav>
+//     );
+// }
+
+// export default Navbar;
 
 
 // 'use client';

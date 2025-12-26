@@ -3,41 +3,44 @@
 import dynamic from 'next/dynamic';
 import { FaTimes, FaBed, FaBath, FaRulerCombined, FaCheck, FaMapMarker } from "react-icons/fa";
 import { useTranslations } from 'next-intl';
+import { useCurrency } from '@/context/CurrencyContext';
 
+// Haritayı client-side yükle
 const PropertyMap = dynamic(() => import('./PropertyMap'), {
     ssr: false,
 });
 
-const PropertyDetails = ({ property }) => {
-    // 1. Gerekli Çeviri Kancaları
-    const t = useTranslations('PropertyDetails'); // Sayfa başlıkları
-    const tAmenities = useTranslations('Amenities'); // Olanaklar (Wifi, Pool vb.)
-    const tCategories = useTranslations('Categories'); // Tipler (Apartment, Villa vb.)
+// 2. Veritabanı Değerlerini -> JSON Anahtarlarına Eşleme (Bu sabit veri olduğu için dışarıda kalabilir)
+const amenityMap = {
+    "Wifi": "wifi",
+    "Full kitchen": "kitchen",
+    "Washer & Dryer": "washer_dryer",
+    "Free Parking": "free_parking",
+    "Swimming Pool": "pool",
+    "Hot Tub": "hot_tub",
+    "24/7 Security": "security",
+    "Wheelchair Accessible": "wheelchair",
+    "Elevator Access": "elevator",
+    "Dishwasher": "dishwasher",
+    "Gym/Fitness Center": "gym",
+    "Air Conditioning": "ac",
+    "Balcony/Patio": "balcony",
+    "Smart TV": "smart_tv",
+    "Coffee Maker": "coffee_maker"
+};
 
-    // 2. Veritabanı Değerlerini -> JSON Anahtarlarına Eşleme
-    // Veritabanında "Swimming Pool" yazar, ama JSON'da anahtar "pool"dur.
-    const amenityMap = {
-        "Wifi": "wifi",
-        "Full kitchen": "kitchen",
-        "Washer & Dryer": "washer_dryer",
-        "Free Parking": "free_parking",
-        "Swimming Pool": "pool",
-        "Hot Tub": "hot_tub",
-        "24/7 Security": "security",
-        "Wheelchair Accessible": "wheelchair",
-        "Elevator Access": "elevator",
-        "Dishwasher": "dishwasher",
-        "Gym/Fitness Center": "gym",
-        "Air Conditioning": "ac",
-        "Balcony/Patio": "balcony",
-        "Smart TV": "smart_tv",
-        "Coffee Maker": "coffee_maker"
-    };
+const PropertyDetails = ({ property }) => {
+    // ✅ DÜZELTME: Hook'ları fonksiyonun İÇİNE aldık
+    const t = useTranslations('PropertyDetails');
+    const tAmenities = useTranslations('Amenities');
+    const tCategories = useTranslations('Categories');
+
+    const { formatPrice } = useCurrency();
 
     return (
         <main>
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center md:text-left border border-gray-100 dark:border-gray-700">
-                {/* Tip Çevirisi: tCategories('Apartment') -> Daire */}
+                {/* Tip Çevirisi */}
                 <div className="text-gray-500 dark:text-gray-400 mb-4 font-semibold uppercase tracking-wider">
                     {tCategories(property.type)}
                 </div>
@@ -61,7 +64,7 @@ const PropertyDetails = ({ property }) => {
                         <div className="text-gray-500 dark:text-gray-400 mr-2 font-bold">{t('nightly')}</div>
                         <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                             {property.rates.nightly ? (
-                                `$${property.rates.nightly.toLocaleString()}`
+                                formatPrice(property.rates.nightly)
                             ) : (
                                 <FaTimes className="text-red-700 dark:text-red-500" />
                             )}
@@ -71,7 +74,7 @@ const PropertyDetails = ({ property }) => {
                         <div className="text-gray-500 dark:text-gray-400 mr-2 font-bold">{t('weekly')}</div>
                         <div className="text-2xl font-bold text-blue-500 dark:text-blue-400">
                             {property.rates.weekly ? (
-                                `$${property.rates.weekly.toLocaleString()}`
+                                formatPrice(property.rates.weekly)
                             ) : (
                                 <FaTimes className="text-red-700 dark:text-red-500" />
                             )}
@@ -81,7 +84,7 @@ const PropertyDetails = ({ property }) => {
                         <div className="text-gray-500 dark:text-gray-400 mr-2 font-bold">{t('monthly')}</div>
                         <div className="text-2xl font-bold text-blue-500 dark:text-blue-400">
                             {property.rates.monthly ? (
-                                `$${property.rates.monthly.toLocaleString()}`
+                                formatPrice(property.rates.monthly)
                             ) : (
                                 <FaTimes className="text-red-700 dark:text-red-500" />
                             )}
@@ -116,10 +119,7 @@ const PropertyDetails = ({ property }) => {
 
                 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 list-none">
                     {property.amenities.map((amenity, index) => {
-                        // DB'deki değer (örn: "Swimming Pool") -> Haritadaki anahtar (örn: "pool")
                         const amenityKey = amenityMap[amenity];
-
-                        // Anahtar varsa çeviriyi getir, yoksa orijinal metni yaz (Yedek plan)
                         const displayAmenity = amenityKey ? tAmenities(amenityKey) : amenity;
 
                         return (
@@ -132,7 +132,6 @@ const PropertyDetails = ({ property }) => {
                 </ul>
             </div>
 
-            {/* Map */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-6 border border-gray-100 dark:border-gray-700">
                 <PropertyMap property={property} />
             </div>
@@ -141,6 +140,159 @@ const PropertyDetails = ({ property }) => {
 }
 
 export default PropertyDetails;
+
+// 'use client';
+
+// import dynamic from 'next/dynamic';
+// import { FaTimes, FaBed, FaBath, FaRulerCombined, FaCheck, FaMapMarker } from "react-icons/fa";
+// import { useTranslations } from 'next-intl';
+// import { useCurrency } from '@/context/CurrencyContext';
+// const PropertyMap = dynamic(() => import('./PropertyMap'), {
+//     ssr: false,
+// });
+
+// // 1. Gerekli Çeviri Kancaları
+// const t = useTranslations('PropertyDetails'); // Sayfa başlıkları
+// const tAmenities = useTranslations('Amenities'); // Olanaklar (Wifi, Pool vb.)
+// const tCategories = useTranslations('Categories'); // Tipler (Apartment, Villa vb.)
+
+// const amenityMap = {
+//     "Wifi": "wifi",
+//     "Full kitchen": "kitchen",
+//     "Washer & Dryer": "washer_dryer",
+//     "Free Parking": "free_parking",
+//     "Swimming Pool": "pool",
+//     "Hot Tub": "hot_tub",
+//     "24/7 Security": "security",
+//     "Wheelchair Accessible": "wheelchair",
+//     "Elevator Access": "elevator",
+//     "Dishwasher": "dishwasher",
+//     "Gym/Fitness Center": "gym",
+//     "Air Conditioning": "ac",
+//     "Balcony/Patio": "balcony",
+//     "Smart TV": "smart_tv",
+//     "Coffee Maker": "coffee_maker"
+// };
+
+
+
+// const PropertyDetails = ({ property }) => {
+//     const t = useTranslations('PropertyDetails');
+//     const tAmenities = useTranslations('Amenities');
+//     const tCategories = useTranslations('Categories');
+
+//     const { formatPrice } = useCurrency();
+
+//     return (
+//         <main>
+//             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center md:text-left border border-gray-100 dark:border-gray-700">
+//                 {/* Tip Çevirisi: tCategories('Apartment') -> Daire */}
+//                 <div className="text-gray-500 dark:text-gray-400 mb-4 font-semibold uppercase tracking-wider">
+//                     {tCategories(property.type)}
+//                 </div>
+
+//                 <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">{property.name}</h1>
+
+//                 <div className="text-gray-500 dark:text-gray-300 mb-4 flex align-middle justify-center md:justify-start">
+//                     <FaMapMarker className="mr-1 mt-1 text-orange-700 dark:text-orange-400" />
+//                     <p className="text-orange-700 dark:text-orange-400">
+//                         {property.location.street}, {property.location.city}, {property.location.state}{" "}
+//                         {property.location.zipcode}
+//                     </p>
+//                 </div>
+
+//                 <h3 className="text-lg font-bold my-6 bg-gray-800 dark:bg-gray-700 text-white p-2 rounded-md">
+//                     {t('ratesOptions')}
+//                 </h3>
+
+//                 <div className="flex flex-col md:flex-row justify-around">
+//                     <div className="flex items-center justify-center mb-4 border-b border-gray-200 dark:border-gray-700 md:border-b-0 pb-4 md:pb-0">
+//                         <div className="text-gray-500 dark:text-gray-400 mr-2 font-bold">{t('nightly')}</div>
+//                         <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+//                             {property.rates.nightly ? (
+//                                 // `$${property.rates.nightly.toLocaleString()}`
+//                                 formatPrice(property.rates.nightly)
+//                             ) : (
+//                                 <FaTimes className="text-red-700 dark:text-red-500" />
+//                             )}
+//                         </div>
+//                     </div>
+//                     <div className="flex items-center justify-center mb-4 border-b border-gray-200 dark:border-gray-700 md:border-b-0 pb-4 md:pb-0">
+//                         <div className="text-gray-500 dark:text-gray-400 mr-2 font-bold">{t('weekly')}</div>
+//                         <div className="text-2xl font-bold text-blue-500 dark:text-blue-400">
+//                             {property.rates.weekly ? (
+//                                 // `$${property.rates.weekly.toLocaleString()}`
+//                                 formatPrice(property.rates.weekly)
+//                             ) : (
+//                                 <FaTimes className="text-red-700 dark:text-red-500" />
+//                             )}
+//                         </div>
+//                     </div>
+//                     <div className="flex items-center justify-center mb-4 pb-4 md:pb-0">
+//                         <div className="text-gray-500 dark:text-gray-400 mr-2 font-bold">{t('monthly')}</div>
+//                         <div className="text-2xl font-bold text-blue-500 dark:text-blue-400">
+//                             {property.rates.monthly ? (
+//                                 // `$${property.rates.monthly.toLocaleString()}`
+//                                 formatPrice(property.rates.monthly)
+//                             ) : (
+//                                 <FaTimes className="text-red-700 dark:text-red-500" />
+//                             )}
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>
+
+//             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-6 border border-gray-100 dark:border-gray-700">
+//                 <h3 className="text-lg font-bold mb-6 text-gray-800 dark:text-white">{t('descDetails')}</h3>
+//                 <div className="flex justify-center gap-4 text-blue-500 dark:text-blue-400 mb-4 text-xl space-x-9">
+//                     <p>
+//                         <FaBed className="inline-block mr-2" /> {property.beds}{" "}
+//                         <span className="hidden sm:inline">{t('beds')}</span>
+//                     </p>
+//                     <p>
+//                         <FaBath className="inline-block mr-2" /> {property.baths}{" "}
+//                         <span className="hidden sm:inline">{t('baths')}</span>
+//                     </p>
+//                     <p>
+//                         <FaRulerCombined className="inline-block mr-2" />
+//                         {property.square_feet} <span className="hidden sm:inline">{t('sqft')}</span>
+//                     </p>
+//                 </div>
+//                 <p className="text-gray-500 dark:text-gray-300 mb-4 leading-relaxed">
+//                     {property.description}
+//                 </p>
+//             </div>
+
+//             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-6 border border-gray-100 dark:border-gray-700">
+//                 <h3 className="text-lg font-bold mb-6 text-gray-800 dark:text-white">{t('amenitiesTitle')}</h3>
+
+//                 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 list-none">
+//                     {property.amenities.map((amenity, index) => {
+//                         // DB'deki değer (örn: "Swimming Pool") -> Haritadaki anahtar (örn: "pool")
+//                         const amenityKey = amenityMap[amenity];
+
+//                         // Anahtar varsa çeviriyi getir, yoksa orijinal metni yaz (Yedek plan)
+//                         const displayAmenity = amenityKey ? tAmenities(amenityKey) : amenity;
+
+//                         return (
+//                             <li key={index} className="mb-2 flex items-center text-gray-600 dark:text-gray-300">
+//                                 <FaCheck className="inline-block text-green-500 mr-2" />
+//                                 {displayAmenity}
+//                             </li>
+//                         );
+//                     })}
+//                 </ul>
+//             </div>
+
+//             {/* Map */}
+//             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-6 border border-gray-100 dark:border-gray-700">
+//                 <PropertyMap property={property} />
+//             </div>
+//         </main>
+//     );
+// }
+
+// export default PropertyDetails;
 
 
 // 'use client';

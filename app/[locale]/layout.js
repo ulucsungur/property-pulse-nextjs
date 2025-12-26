@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { GlobalProvider } from "@/context/GlobalContext";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ScrollProgress from "@/components/ScrollProgress";
-
+import { CurrencyProvider } from '@/context/CurrencyContext';
 // --- i18n İÇİN GEREKLİ IMPORTLAR ---
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
@@ -33,19 +33,18 @@ export default async function RootLayout({ children, params }) {
         {/* HTML dilini dinamik yapıyoruz: lang={locale} */}
         <html lang={locale} suppressHydrationWarning>
           <body>
-            {/* 3. UYGULAMAYI NEXT-INTL İLE SARMALIYORUZ */}
             <NextIntlClientProvider messages={messages}>
-
-              <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-                <ScrollProgress />
-                <main>
-                  <Navbar />
-                  {children}
-                </main>
-                <Footer />
-                <ToastContainer />
-              </ThemeProvider>
-
+              <CurrencyProvider>
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                  <ScrollProgress />
+                  <main>
+                    <Navbar />
+                    {children}
+                  </main>
+                  <Footer />
+                  <ToastContainer />
+                </ThemeProvider>
+              </CurrencyProvider>
             </NextIntlClientProvider>
           </body>
         </html>

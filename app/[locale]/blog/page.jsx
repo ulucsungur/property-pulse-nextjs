@@ -27,7 +27,7 @@ const BlogPage = async ({ params }) => {
 
                 <div className='flex flex-col md:flex-row justify-between items-center mb-8'>
                     {/* Başlık Çevirisi */}
-                    <h1 className='text-3xl font-bold text-gray-800 dark:text-white mb-4 md:mb-0'>
+                    <h1 className='text-3xl font-bold text-gray-800 dark:text-white mb-4 md:mb-0 mt-16'>
                         {t('pageTitle')}
                     </h1>
                 </div>
