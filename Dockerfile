@@ -1,51 +1,42 @@
-# ===============================
-# 1️⃣ BASE
-# ===============================
-FROM node:20-alpine AS base
-WORKDIR /app
-ENV NODE_ENV=production
+FROM node:22-alpine AS base
 
-# ===============================
-# 2️⃣ DEPENDENCIES
-# ===============================
+# --- STAGE 1: Bağımlılıkları Yükle ---
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
-COPY package.json package-lock.json ./
-RUN npm ci --include=dev
+WORKDIR /app
 
-# ===============================
-# 3️⃣ BUILD
-# ===============================
+COPY package.json package-lock.json ./
+# Burada NODE_ENV belirtmiyoruz ki tüm paketler (Tailwind dahil) yüklensin
+RUN npm install
+
+# --- STAGE 2: Build Aşaması ---
 FROM base AS builder
+WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# Turbopack ile build (Next 15)
+
+# KRİTİK: Buradan NODE_ENV=development satırını SİLDİK. 
+# Next.js build komutu zaten kendi içinde üretim optimizasyonunu yapacak.
+ENV NEXT_TELEMETRY_DISABLED 1
 RUN npm run build
 
-# ===============================
-# 4️⃣ RUNTIME (STANDALONE)
-# ===============================
-FROM node:20-alpine AS runner
-
+# --- STAGE 3: Çalıştırma Aşaması (Runner) ---
+FROM base AS runner
 WORKDIR /app
+
 ENV NODE_ENV=production
-ENV PORT=8080
-ENV HOSTNAME=0.0.0.0
+ENV NEXT_TELEMETRY_DISABLED 1
 
-# Cloud Run ve güvenlik için non-root user oluşturma
-RUN addgroup -g 1001 nodejs \
-    && adduser -u 1001 -G nodejs -s /bin/sh -D nextjs
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-# Standalone çıktılarını kopyalama
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
-
-# CACHE İZNİ: Klasörü oluştur ve sahipliğini nextjs kullanıcısına ver
-RUN mkdir -p .next/cache && chown -R nextjs:nodejs .next/cache
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
-EXPOSE 8080
+EXPOSE 3000
+ENV PORT 3000
 
 CMD ["node", "server.js"]
