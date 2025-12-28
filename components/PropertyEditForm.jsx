@@ -296,6 +296,20 @@ const PropertyEditForm = ({ property }) => {
                     ))}
                 </div>
             </div>
+            {/* FEATURED PROPERTY - Mevcut hatalı kısmı bununla değiştir */}
+            <div className='mb-4 flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800'>
+                <input
+                    type='checkbox'
+                    id='is_featured'
+                    name='is_featured'
+                    className='w-5 h-5 cursor-pointer'
+                // NOT: State kullanmadığın için checked ve onChange'i sildik. 
+                // Form gönderildiğinde "name" üzerinden otomatik alınacak.
+                />
+                <label htmlFor='is_featured' className='text-gray-700 dark:text-gray-200 font-bold cursor-pointer'>
+                    {locale === 'tr' ? 'Bu İlanı Öne Çıkar (Ana Sayfada Göster)' : 'Feature this Property (Show on Homepage)'}
+                </label>
+            </div>
 
             {/* FİYATLAR */}
             <div className="mb-4 bg-gray-50 dark:bg-gray-700 p-4 rounded-md border border-gray-200 dark:border-gray-600">

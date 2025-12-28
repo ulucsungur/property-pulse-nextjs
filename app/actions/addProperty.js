@@ -84,6 +84,7 @@ async function addProperty(formData) {
             phone: formData.get("seller_info.phone"),
         },
         images: imageUrls,
+        is_featured: formData.get("is_featured") === "on",
     };
 
     // --- 2. YENİ EKLENEN KISIM: OTOMATİK EMBEDDING ---

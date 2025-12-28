@@ -241,7 +241,8 @@
     "noAds": "No properties found.",
     "edit": "Edit (AI)",
     "delete": "Delete",
-    "confirmDelete": "Are you sure you want to delete this property?"
+    "confirmDelete": "Are you sure you want to delete this property?",
+    "featuredProperties": "Featured Properties"
   },
   "AdminMessages": {
     "title": "Incoming Messages (CRM)",

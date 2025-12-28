@@ -2,9 +2,11 @@ import PropertyCard from '@/components/PropertyCard';
 import connectToDatabase from '@/config/database';
 import Property from '@/models/Property';
 import AnimationWrapper from './AnimationWrapper';
+import { getTranslations } from 'next-intl/server';
 
 const FeaturedProperties = async () => {
     await connectToDatabase();
+    const t = await getTranslations('AdminProperties');
 
     const propertiesDoc = await Property.find({
         is_featured: true,
@@ -17,7 +19,7 @@ const FeaturedProperties = async () => {
             <section className="bg-blue-50 dark:bg-gray-900 px-4 pt-6 pb-10">
                 <div className='container-xl lg:container m-auto'>
                     <h2 className='text-3xl font-bold text-blue-500 mb-6 text-center'>
-                        Featured Properties
+                        {t('featuredProperties') || 'Featured Properties'}
                     </h2>
 
                     {/* DÜZELTME BURADA: */}

@@ -241,7 +241,8 @@
     "noAds": "Henüz ilan yok.",
     "edit": "Düzenle (AI)",
     "delete": "Sil",
-    "confirmDelete": "Bu ilanı silmek istediğinize emin misiniz?"
+    "confirmDelete": "Bu ilanı silmek istediğinize emin misiniz?",
+    "featuredProperties": "Öne Çıkan İlanlar"
   },
   "AdminMessages": {
     "title": "Gelen Mesajlar (CRM)",

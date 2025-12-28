@@ -219,67 +219,22 @@ const PropertyAddForm = () => {
                             </label>
                         </div>
                     ))}
-                    {/* <div>
-                        <input type="checkbox" id="amenity_wifi" name="amenities" value="Wifi" className="mr-2" />
-                        <label htmlFor="amenity_wifi">Wifi</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_kitchen" name="amenities" value="Full kitchen" className="mr-2" />
-                        <label htmlFor="amenity_kitchen">Full kitchen</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_washer_dryer" name="amenities" value="Washer & Dryer" className="mr-2" />
-                        <label htmlFor="amenity_washer_dryer">Washer & Dryer</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_free_parking" name="amenities" value="Free Parking" className="mr-2" />
-                        <label htmlFor="amenity_free_parking">Free Parking</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_pool" name="amenities" value="Swimming Pool" className="mr-2" />
-                        <label htmlFor="amenity_pool">Swimming Pool</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_hot_tub" name="amenities" value="Hot Tub" className="mr-2" />
-                        <label htmlFor="amenity_hot_tub">Hot Tub</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_24_7_security" name="amenities" value="24/7 Security" className="mr-2" />
-                        <label htmlFor="amenity_24_7_security">24/7 Security</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_wheelchair_accessible" name="amenities" value="Wheelchair Accessible" className="mr-2" />
-                        <label htmlFor="amenity_wheelchair_accessible">Wheelchair Accessible</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_elevator_access" name="amenities" value="Elevator Access" className="mr-2" />
-                        <label htmlFor="amenity_elevator_access">Elevator Access</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_dishwasher" name="amenities" value="Dishwasher" className="mr-2" />
-                        <label htmlFor="amenity_dishwasher">Dishwasher</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_gym_fitness_center" name="amenities" value="Gym/Fitness Center" className="mr-2" />
-                        <label htmlFor="amenity_gym_fitness_center">Gym/Fitness Center</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_air_conditioning" name="amenities" value="Air Conditioning" className="mr-2" />
-                        <label htmlFor="amenity_air_conditioning">Air Conditioning</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_balcony_patio" name="amenities" value="Balcony/Patio" className="mr-2" />
-                        <label htmlFor="amenity_balcony_patio">Balcony/Patio</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_smart_tv" name="amenities" value="Smart TV" className="mr-2" />
-                        <label htmlFor="amenity_smart_tv">Smart TV</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="amenity_coffee_maker" name="amenities" value="Coffee Maker" className="mr-2" />
-                        <label htmlFor="amenity_coffee_maker">Coffee Maker</label>
-                    </div> */}
+
                 </div>
+            </div>
+            {/* FEATURED PROPERTY - Mevcut hatalı kısmı bununla değiştir */}
+            <div className='mb-4 flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800'>
+                <input
+                    type='checkbox'
+                    id='is_featured'
+                    name='is_featured'
+                    className='w-5 h-5 cursor-pointer'
+                // NOT: State kullanmadığın için checked ve onChange'i sildik. 
+                // Form gönderildiğinde "name" üzerinden otomatik alınacak.
+                />
+                <label htmlFor='is_featured' className='text-gray-700 dark:text-gray-200 font-bold cursor-pointer'>
+                    {locale === 'tr' ? 'Bu İlanı Öne Çıkar (Ana Sayfada Göster)' : 'Feature this Property (Show on Homepage)'}
+                </label>
             </div>
 
             <div className="mb-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-md border border-gray-200 dark:border-gray-700">

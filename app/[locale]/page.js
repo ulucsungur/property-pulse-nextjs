@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
 }
 
 const HomePage = () => {
-  console.log(process.env.MONGODB_URI);//mongodb bağlantısını test etmek için
+  //console.log(process.env.MONGODB_URI);//mongodb bağlantısını test etmek için
 
   return (<>
     <Hero />
