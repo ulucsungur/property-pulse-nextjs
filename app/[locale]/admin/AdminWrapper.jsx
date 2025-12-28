@@ -47,7 +47,7 @@ export default function AdminWrapper({ children, session }) {
                         fixed top-0 left-0 h-full w-72 bg-slate-900 text-white shadow-2xl z-[9999]
                         transform transition-transform duration-300 ease-in-out
                         ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"} 
-                        md:translate-x-0 md:static md:h-screen md:sticky md:top-0
+                        md:translate-x-0  md:h-screen md:sticky md:top-0
                     `}
                 >
                     <div className="flex items-center justify-between px-6 h-16 border-b border-slate-700 bg-slate-950">
