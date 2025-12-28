@@ -226,7 +226,8 @@
     "ads": "Ads",
     "messages": "Messages",
     "users": "Users",
-    "backToSite": "Back to Site"
+    "backToSite": "Back to Site",
+    "faq": "FAQ Management"
   },
   "AdminProperties": {
     "title": "My Ads",
@@ -306,5 +307,27 @@
     "toastBookSuccess": "Property booked successfully!",
     "toastMsgSuccess": "Message sent successfully!",
      "bookingDisabled": "Direct booking is not available for this property. Please contact the seller for pricing information."
-  }
+  },
+"AdminFaq": {
+  "title": "FAQ Management",
+  "trContent": "Turkish Content",
+  "enContent": "English Content",
+  "question": "Question",
+  "answer": "Answer",
+  "order": "Order",
+  "add": "Add New Question",
+  "update": "Update",
+  "orderCol": "Order",
+  "questionCol": "Question (TR / EN)",
+  "actionsCol": "Actions",
+  "confirmDelete": "Are you sure?",
+  "successFetch": "Data loaded",
+  "successAdd": "Added successfully",
+  "successUpdate": "Updated successfully",
+  "successDelete": "Deleted successfully",
+  "errorFetch": "Failed to load FAQ data",
+  "errorAction": "Action failed",
+  "noQuestions": "No questions added yet."
+}
+ 
 }

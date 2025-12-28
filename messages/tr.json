@@ -226,7 +226,8 @@
     "ads": "İlanlar",
     "messages": "Mesajlar",
     "users": "Kullanıcılar",
-    "backToSite": "Siteye Dön"
+    "backToSite": "Siteye Dön",
+    "faq": "SSS Yönetimi"
   },
   "AdminProperties": {
     "title": "İlanlarım",
@@ -305,6 +306,27 @@
     "placeholderMsg": "Mesajınız...",
     "toastBookSuccess": "Rezervasyon başarıyla oluşturuldu!",
     "toastMsgSuccess": "Mesaj gönderildi!",
-     "bookingDisabled": "Bu mülk için doğrudan rezervasyon yapılamamaktadır. Lütfen fiyat bilgisi için satıcı ile iletişime geçin."
-  }
+    "bookingDisabled": "Bu mülk için doğrudan rezervasyon yapılamamaktadır. Lütfen fiyat bilgisi için satıcı ile iletişime geçin."
+  },
+    "AdminFaq": {
+  "title": "Sıkça Sorulan Sorular Yönetimi",
+  "trContent": "Türkçe İçerik",
+  "enContent": "İngilizce İçerik",
+  "question": "Soru",
+  "answer": "Cevap",
+  "order": "Sıralama",
+  "add": "Yeni Soru Ekle",
+  "update": "Güncelle",
+  "orderCol": "Sıra",
+  "questionCol": "Soru (TR / EN)",
+  "actionsCol": "İşlemler",
+  "confirmDelete": "Emin misiniz?",
+  "successFetch": "Veriler yüklendi",
+  "successAdd": "Başarıyla eklendi",
+  "successUpdate": "Başarıyla güncellendi",
+  "successDelete": "Başarıyla silindi",
+  "errorFetch": "SSS verileri yüklenemedi",
+  "errorAction": "İşlem başarısız",
+  "noQuestions": "Henüz soru eklenmemiş."
+}
 }

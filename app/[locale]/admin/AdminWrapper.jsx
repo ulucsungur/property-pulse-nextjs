@@ -72,7 +72,20 @@ export default function AdminWrapper({ children, session }) {
                         <SidebarLink href="/admin/messages" icon="💬" label={t('messages')} onClick={() => setIsMobileMenuOpen(false)} />
 
                         {session?.user?.role === "admin" && (
-                            <SidebarLink href="/admin/users" icon="👥" label={t('users')} onClick={() => setIsMobileMenuOpen(false)} />
+                            <>
+                                <SidebarLink
+                                    href="/admin/users"
+                                    icon="👥"
+                                    label={t('users')}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                />
+                                <SidebarLink
+                                    href="/admin/faq"
+                                    icon="❓"
+                                    label={t('faq')}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                />
+                            </>
                         )}
 
                         <div className="pt-4 mt-4 border-t border-slate-800">

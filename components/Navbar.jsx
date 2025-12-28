@@ -10,12 +10,14 @@ import { signOut, useSession } from "next-auth/react";
 import UnreadMessageCount from "./UnreadMessageCount";
 import ThemeSwitcher from "./ThemeSwitcher";
 import LangSwitcher from './LangSwitcher';
-import CurrencySelect from './CurrencySelect'; // ✅ YENİ EKLENDİ
+import CurrencySelect from './CurrencySelect';
+import { useLocale } from 'next-intl';
 
 const Navbar = () => {
 
     const t = useTranslations('Navigation');
     const { data: session } = useSession();
+    const locale = useLocale();
 
     // --- Admin veya Agent mi kontrolü ---
     const isAdminOrAgent = session?.user?.role === 'admin' || session?.user?.role === 'agent';
@@ -93,6 +95,14 @@ const Navbar = () => {
                                         <Link href="/properties/add" className={`${pathname === '/properties/add' ? 'bg-black/40' : 'hover:bg-white/10'} text-white rounded-md px-3 py-2 transition duration-200`}>{t('addProperty')}</Link>
                                     </>
                                 )}
+                                <Link
+                                    href='/faq'
+                                    className={`${pathname === '/faq' ? 'bg-black' : ''
+                                        } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                                >
+                                    {locale === 'tr' ? 'SSS' : 'FAQ'}
+                                </Link>
+
                             </div>
                         </div>
                     </div>
@@ -220,6 +230,14 @@ const Navbar = () => {
                                 >{t('addProperty')}</Link>
                             </>
                         )}
+                        <Link
+                            href='/faq'
+                            className={`${pathname === '/faq' ? 'bg-black' : ''
+                                } text-white block rounded-md px-3 py-2 text-base font-medium`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            {locale === 'tr' ? 'Sıkça Sorulan Sorular' : 'FAQ'}
+                        </Link>
 
                         {/* ✅ YENİ: Mobilde Üstten Kaldırdığımız Ayarlar Buraya Geldi */}
                         <div className="border-t border-white/10 pt-4 mt-4 px-3 space-y-3">
