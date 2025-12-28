@@ -10,7 +10,7 @@ const FaqSchema = new Schema({
     timestamps: true
 });
 
-const Faq = models.Faq || model('Faq', FaqSchema);
+const Faq = models.Faq || model('Faq', FaqSchema, 'faqs');
 export default Faq;
 
 // import mongoose from 'mongoose';
