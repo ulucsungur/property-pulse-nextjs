@@ -328,5 +328,15 @@
   "errorFetch": "SSS verileri yüklenemedi",
   "errorAction": "İşlem başarısız",
   "noQuestions": "Henüz soru eklenmemiş."
+},
+"Footer": {
+  "about": "Property Pulse, hayalinizdeki evi bulmanız için en güvenilir emlak platformudur.",
+  "quickLinks": "Hızlı Bağlantılar",
+  "faq": "Sıkça Sorulan Sorular",
+  "properties": "Tüm İlanlar",
+  "contact": "İletişim",
+  "allRightsReserved": "Tüm hakları saklıdır.",
+  "terms": "Kullanım Şartları",
+  "privacy": "Gizlilik Politikası"
 }
 }

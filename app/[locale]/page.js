@@ -6,6 +6,14 @@ import FeaturedProperties from '@/components/FeaturedProperties';
 import SemanticSearchBox from '@/components/SemanticSearchBox';
 import CategoryButtons from '@/components/CategoryButtons';
 
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
+
+  return {
+    title: locale === 'tr' ? 'Ana Sayfa' : 'Home',
+  };
+}
+
 const HomePage = () => {
   console.log(process.env.MONGODB_URI);//mongodb bağlantısını test etmek için
 

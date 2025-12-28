@@ -13,6 +13,28 @@ import { FaArrowLeft } from "react-icons/fa";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import BookOrContact from "@/components/BookOrContact";
 
+// 1. generateMetadata fonksiyonunu ekle
+export async function generateMetadata({ params }) {
+    const { id } = await params;
+
+    // API'den ilan verisini çekiyoruz (Sadece başlık ve açıklama için)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMAIN}/properties/${id}`);
+    const property = await res.json();
+
+    if (!property) {
+        return { title: 'Property Not Found' };
+    }
+
+    return {
+        title: property.name,
+        description: property.description?.substring(0, 160), // İlk 160 karakteri al
+        openGraph: {
+            images: [property.images?.[0]], // Sosyal medyada paylaşınca görünecek resim
+        },
+    };
+}
+
+// 2. Mevcut PropertyDetailPage bileşeni aşağıda kalmaya devam ediyor...
 
 const PropertyPage = async ({ params }) => {
     await connectToDatabase();

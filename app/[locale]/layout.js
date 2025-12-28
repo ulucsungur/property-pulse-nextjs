@@ -10,13 +10,17 @@ import { GlobalProvider } from "@/context/GlobalContext";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ScrollProgress from "@/components/ScrollProgress";
 import { CurrencyProvider } from '@/context/CurrencyContext';
-// --- i18n İÇİN GEREKLİ IMPORTLAR ---
+
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 
 export const metadata = {
-  title: "PropertyPulse",
-  description: "Find your dream rental property",
+  title: {
+    template: '%s | Property Pulse',
+    default: 'Property Pulse | Find Your Dream Home', // Ana sayfa başlığı
+  },
+  description: 'The most reliable real estate platform to find your dream home.',
+  keywords: 'real estate, find home, buy property, rent apartment',
 };
 
 // Layout artık ASYNC olmalı ve PARAMS almalı

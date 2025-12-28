@@ -328,6 +328,15 @@
   "errorFetch": "Failed to load FAQ data",
   "errorAction": "Action failed",
   "noQuestions": "No questions added yet."
+},
+"Footer": {
+  "about": "Property Pulse is the most reliable real estate platform to find your dream home.",
+  "quickLinks": "Quick Links",
+  "faq": "Frequently Asked Questions",
+  "properties": "All Properties",
+  "contact": "Contact",
+  "allRightsReserved": "All rights reserved.",
+  "terms": "Terms of Use",
+  "privacy": "Privacy Policy"
 }
- 
 }

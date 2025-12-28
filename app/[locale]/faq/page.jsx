@@ -1,5 +1,16 @@
 import { useLocale } from 'next-intl';
 
+export async function generateMetadata({ params }) {
+    const { locale } = await params;
+
+    return {
+        title: locale === 'tr' ? 'Sıkça Sorulan Sorular' : 'Frequently Asked Questions',
+        description: locale === 'tr'
+            ? 'Gayrimenkul sertifikaları ve platformumuz hakkında merak edilenler.'
+            : 'Frequently asked questions about real estate certificates and our platform.',
+    };
+}
+
 async function getFaqs() {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMAIN}/faq`, {
