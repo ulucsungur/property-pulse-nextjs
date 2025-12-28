@@ -4,6 +4,31 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FaArrowLeft, FaCalendarAlt, FaUser } from 'react-icons/fa';
 
+export async function generateMetadata({ params }) {
+    // params içinden locale ve id'yi alıyoruz (Next.js 15 kuralı: await)
+    const { id, locale } = await params;
+
+    // Senin kendi aksiyonunu (getBlog) burada da kullanıyoruz. 
+    // Next.js bu veriyi cache'ler, yani veritabanına iki kez gitmez.
+    const blog = await getBlog(id);
+
+    if (!blog) {
+        return { title: 'Blog Post Not Found' };
+    }
+
+    return {
+        // Blog başlığını sekme ismi yapar
+        title: blog.title,
+        description: blog.content?.substring(0, 160),
+        openGraph: {
+            title: blog.title,
+            description: blog.content?.substring(0, 160),
+            images: [blog.image],
+            type: 'article',
+        },
+    };
+}
+
 const BlogDetailPage = async ({ params }) => {
     // params promise olduğu için await edilmeli (Next.js 15)
     const { id } = await params;

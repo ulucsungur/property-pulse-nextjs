@@ -8,10 +8,13 @@ export async function generateMetadata({ params }) {
     const t = await getTranslations({ locale, namespace: 'Blog' });
 
     return {
-        title: t('metaTitle'),
-        description: t('metaDesc'),
+        title: locale === 'tr' ? 'Emlak Rehberi ve Blog' : 'Real Estate Guide & Blog',
+        description: locale === 'tr'
+            ? 'Gayrimenkul dünyasından en güncel haberler, yatırım tavsiyeleri ve ipuçları.'
+            : 'Latest news, investment advice, and tips from the real estate world.',
     };
 }
+
 
 const BlogPage = async ({ params }) => {
     // 1. Dili ve Çeviriyi Al
